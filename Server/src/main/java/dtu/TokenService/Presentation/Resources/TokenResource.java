@@ -3,9 +3,6 @@ package dtu.TokenService.Presentation.Resources;
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,7 +10,7 @@ import javax.ws.rs.core.Response;
 @Path("/tokens")
 public class TokenResource  {
 
-	private static TokenService service = new TokenService(new LocalTokenRepository());
+	private static TokenService service = new TokenService(new LocalTokenRepository(), new TokenMessageFactory().getService());
 
 	@POST
 	@Path("{customerId}/{numberOfTokens}")

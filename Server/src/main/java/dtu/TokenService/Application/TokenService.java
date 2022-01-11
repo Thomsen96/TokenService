@@ -8,27 +8,34 @@ import java.util.UUID;
 
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Interfaces.ITokenRepository;
-import dtu.TokenService.Presentation.Resources.TokenMessageFactory;
 import dtu.TokenService.Presentation.Resources.TokenMessageService;
 
 public class TokenService {
 
 	private ITokenRepository tokenRepository;
 
+	private TokenMessageService tokenMessageService;
 
 
 
-	public TokenService(ITokenRepository tokenRepository) {
+
+	public TokenService(ITokenRepository tokenRepository, TokenMessageService tokenMessageService) {
 		this.tokenRepository = tokenRepository;
+		this.tokenMessageService = tokenMessageService;
 	}
 
 	public List<Token> createTokens(Integer numOfTokens, String customerId) {
 
-		TokenMessageService tokenMessageService = new TokenMessageFactory().getService();
-
-		if(tokenMessageService.verifyCustomer(customerId) == false)
+		
+		
+		try 
 		{
-			return null;
+			if(tokenMessageService.verifyCustomer(customerId) == false)
+			{
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("No connection to MQ");
 		}
 
 		List<Token> tokens = tokenRepository.get(customerId);

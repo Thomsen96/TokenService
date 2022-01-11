@@ -35,9 +35,14 @@ public class LocalTokenRepository implements ITokenRepository {
 	}
 
 	@Override
-	public Token delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean delete(String customerId) {
+		List<Token> customerTokens = tokens.stream().filter(cid -> cid.getCustomerId().equals(customerId))
+				.collect(Collectors.toList());
+		if(customerTokens.size() > 0) {
+			tokens.removeAll(customerTokens);
+			return true;
+		}
+		return false;
 	}
 
 	// private static final HashMap<String, Account> tokens = new HashMap<>();

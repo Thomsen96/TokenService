@@ -19,7 +19,7 @@ public class TokenService {
 		this.tokenRepository = tokenRepository;
 	}
 
-	public List<Token> getTokens(Integer numOfTokens, String customerId) {
+	public List<Token> createTokens(Integer numOfTokens, String customerId) {
 		List<Token> tokens = tokenRepository.get(customerId);
 		if(numOfTokens > 0 && numOfTokens < 6 && tokens.size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {
@@ -28,6 +28,16 @@ public class TokenService {
 		}
 		return tokens;
 	}
+
+	public List<Token> getTokens(String customerId) {
+		return tokenRepository.get(customerId);
+	}
+
+	public boolean deleteTokensForCustomer(String customerId) {
+		return tokenRepository.delete(customerId);
+	}
+
+
 
 
 

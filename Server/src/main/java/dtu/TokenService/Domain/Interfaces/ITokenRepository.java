@@ -12,6 +12,6 @@ public interface ITokenRepository {
 	public Token create(String customerId);
 
 	public Collection<Token> getAll();
-	public Token delete(String id);
+	public boolean delete(String customerId);
 
 }

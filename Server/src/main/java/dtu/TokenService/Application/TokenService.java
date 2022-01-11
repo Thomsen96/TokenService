@@ -1,57 +1,56 @@
 package dtu.TokenService.Application;
 
-import dtu.TokenService.Domain.Entities.Payment;
-import dtu.TokenService.Domain.Repositories.Exceptions.ArgumentNullException;
-import dtu.TokenService.Domain.Repositories.Exceptions.EntityNotFoundException;
-import dtu.TokenService.Domain.Repositories.Interfaces.AccountRepository;
-import dtu.TokenService.Domain.Repositories.Interfaces.PaymentRepository;
-import dtu.ws.fastmoney.Account;
-import dtu.ws.fastmoney.BankService;
-import dtu.ws.fastmoney.BankServiceException_Exception;
-import dtu.ws.fastmoney.BankServiceService;
-
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
+
+import dtu.TokenService.Domain.Entities.Token;
+import dtu.TokenService.Domain.Interfaces.ITokenRepository;
 
 public class TokenService {
 
-
-  private final PaymentRepository paymentRepository;
-  private final AccountRepository accountRepository;
-  private final BankService bankService;
+	private ITokenRepository tokenRepository;
 
 
-  public TokenService(PaymentRepository paymentRepository, AccountRepository accountRepository) {
-    this.paymentRepository = paymentRepository;
-    this.bankService = new BankServiceService().getBankServicePort();
-    this.accountRepository = accountRepository;
-  }
 
-  public boolean pay(int amount, String cid, String mid) throws BankServiceException_Exception {
-    bankService.transferMoneyFromTo(cid, mid, new BigDecimal(String.valueOf(amount)), "Money was given and taken");
-    paymentRepository.create(new Payment(amount, cid, mid));
-    return true;
-  }
+	public TokenService(ITokenRepository tokenRepository) {
+		this.tokenRepository = tokenRepository;
+	}
+
+	public List<Token> getTokens(Integer numOfTokens, String customerId) {
+		List<Token> tokens = tokenRepository.get(customerId);
+		if(numOfTokens > 0 && numOfTokens < 6 && tokens.size() < 2) {
+			for( int i = 0; i < numOfTokens; i++) {
+				tokens.add(tokenRepository.create(customerId));
+			}
+		}
+		return tokens;
+	}
 
 
-  public Account getAccount(String id) throws ArgumentNullException, EntityNotFoundException, BankServiceException_Exception {
-    return accountRepository.get(id);
-  }
 
-  public Collection<Account> getAllAccounts() {
-    return accountRepository.getAll();
-  }
-
-  public Account deleteAccount(String id) {
-    return accountRepository.delete(id);
-  }
-
-  public Account createAccount(Account entity) {
-    return accountRepository.create(entity);
-  }
-
-  public List<String> getTokens(Integer int1, String customerId) {
-    return null;
-  }
+	//public boolean pay(int amount, String cid, String mid) throws BankServiceException_Exception {
+	//bankService.transferMoneyFromTo(cid, mid, new BigDecimal(String.valueOf(amount)), "Money was given and taken");
+	//paymentRepository.create(new Payment(amount, cid, mid));
+	//return true;
+	//}
+	//
+	//
+	//public Account getAccount(String id) throws ArgumentNullException, EntityNotFoundException, BankServiceException_Exception {
+	//return accountRepository.get(id);
+	//}
+	//
+	//public Collection<Account> getAllAccounts() {
+	//return accountRepository.getAll();
+	//}
+	//
+	//public Account deleteAccount(String id) {
+	//return accountRepository.delete(id);
+	//}
+	//
+	//public Account createAccount(Account entity) {
+	//return accountRepository.create(entity);
+	//}
 }

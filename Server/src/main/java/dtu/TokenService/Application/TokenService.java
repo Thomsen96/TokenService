@@ -8,10 +8,13 @@ import java.util.UUID;
 
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Interfaces.ITokenRepository;
+import dtu.TokenService.Presentation.Resources.TokenMessageFactory;
+import dtu.TokenService.Presentation.Resources.TokenMessageService;
 
 public class TokenService {
 
 	private ITokenRepository tokenRepository;
+
 
 
 
@@ -20,6 +23,14 @@ public class TokenService {
 	}
 
 	public List<Token> createTokens(Integer numOfTokens, String customerId) {
+
+		TokenMessageService tokenMessageService = new TokenMessageFactory().getService();
+
+		if(tokenMessageService.verifyCustomer(customerId) == false)
+		{
+			return null;
+		}
+
 		List<Token> tokens = tokenRepository.get(customerId);
 		if(numOfTokens > 0 && numOfTokens < 6 && tokens.size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {

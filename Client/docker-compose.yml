@@ -2,7 +2,7 @@ version: '3'
 services:
   rabbitMq:
     image: rabbitmq:3-management
-    container_name: rabbitMq_container
+    container_name: rabbitMq
     networks:
       - app-network
     
@@ -17,3 +17,5 @@ services:
 
 networks:
   app-network:
+    external:
+      name: deploy_app-network

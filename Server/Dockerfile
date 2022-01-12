@@ -3,11 +3,15 @@
 
 FROM adoptopenjdk:11-jre-hotspot
 COPY target/lib /usr/src/lib
-COPY target/quarkus-app/quarkus-run.jar /usr/src/
+COPY target/token-service-1.0.0.jar /usr/src/
 WORKDIR /usr/src/
-# Maybe?
-EXPOSE 8181
-CMD java -Dquarkus.http.port=8181 -Xmx64m -jar quarkus-app/quarkus-run.jar
+CMD java -Dquarkus.http.port=8182 -Xmx64m -jar token-service-1.0.0.jar
+
+#FROM adoptopenjdk:11-jre-hotspot
+#COPY target/lib /usr/src/lib
+#COPY target/quarkus-app/quarkus-run.jar /usr/src/
+#WORKDIR /usr/src/
+#CMD java -Dquarkus.http.port=8181 -Xmx64m -jar quarkus-app/quarkus-run.jar
 
 #FROM maven:3.8.4-jdk-11-slim
 

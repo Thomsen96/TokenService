@@ -5,7 +5,7 @@ set -e
 
 # Update the set of services and
 # build and execute the system tests
-pushd end-to-end-tests
+pushd Client
 ./deploy.sh 
 sleep 5
 ./test.sh

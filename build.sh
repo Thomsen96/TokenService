@@ -12,7 +12,3 @@ popd
 pushd Server
 ./build.sh
 popd
-
-# pushd Client
-# ./build.sh
-# popd

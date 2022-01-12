@@ -8,8 +8,8 @@ import javax.ws.rs.core.Response;
 
 public class TokenClient {
 
-	public static final String HTTP_LOCALHOST_8080 = "http://localhost:8080";
-	public static final String HTTP_DOCKER_LOCALHOST_8181 = "http://dtu_server_cont:8181";
+	public static final String HTTP_LOCALHOST_8080 = "http://localhost:8182";
+	public static final String HTTP_DOCKER_LOCALHOST_8181 = "http://dtu_server_cont:8182";
 	public static String HTTP_CHOSEN_HOST_AND_PORT = HTTP_LOCALHOST_8080;
 	private final Client client = ClientBuilder.newClient();
 

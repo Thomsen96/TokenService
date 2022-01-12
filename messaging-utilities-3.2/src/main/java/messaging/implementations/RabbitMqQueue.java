@@ -16,7 +16,7 @@ import messaging.MessageQueue;
 public class RabbitMqQueue implements MessageQueue {
 
 	private static final String TOPIC = "events";
-	private static final String DEFAULT_HOSTNAME = "localhost";
+	private static final String DEFAULT_HOSTNAME = "rabbitMq";
 	private static final String EXCHANGE_NAME = "eventsExchange";
 	private static final String QUEUE_TYPE = "topic";
 
@@ -44,6 +44,7 @@ public class RabbitMqQueue implements MessageQueue {
 	private Channel setUpChannel(String hostname) {
 		Channel channel;
 		try {
+			System.out.println(hostname);
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(hostname);
 			Connection connection = factory.newConnection();

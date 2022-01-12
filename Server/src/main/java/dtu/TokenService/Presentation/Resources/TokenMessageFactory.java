@@ -24,7 +24,7 @@ public class TokenMessageFactory {
 		// is called dependency injection.
 		// At the end, we can use the PaymentService in tests
 		// without sending actual messages to RabbitMq.
-		var messageQueue = new RabbitMqQueue("localhost");
+		var messageQueue = new RabbitMqQueue("rabbitMq");
 
 		//TODO: Check how to add busniss logic here.
 		

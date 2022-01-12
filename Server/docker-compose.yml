@@ -1,5 +1,6 @@
 version: '3'
 services:
   token-service-server:
-    image: token-service
+    image: token-service-server
     build: .
+

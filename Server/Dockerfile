@@ -1,5 +1,5 @@
-# Build with: docker build --tag dtupay .  
-# Test with: docker run -ti -p 8080:8080 dtupay
+# Build with: docker build --tag tokenservice_server .
+# Test with: docker run -ti -p 8080:8080 tokenservice_server
 
 
 
@@ -20,5 +20,3 @@ EXPOSE 8181
 # The -Xmx64m demanding from the java runtime to have atleast allocated 64m memory
 # https://docs.oracle.com/cd/E13222_01/wls/docs61/perform/JVMTuning.html
 CMD java -Dquarkus.http.port=8181 -Xmx64m -jar quarkus-app/quarkus-run.jar
-
-

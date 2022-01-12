@@ -3,6 +3,8 @@ services:
   rabbitMq:
     image: rabbitmq:3-management
     container_name: rabbitMq_container
+    networks:
+      - app-network
     
   token-service-server:
     container_name: token-service
@@ -10,3 +12,8 @@ services:
     build: .
     ports:
       - 8182:8182
+    networks:
+      - app-network
+
+networks:
+  app-network:

@@ -1,5 +1,7 @@
 package dtu.TokenService.Presentation.Resources;
 
+import dtu.TokenService.Application.TokenService;
+import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 import messaging.implementations.RabbitMqQueue;
 
 public class TokenMessageFactory {
@@ -22,8 +24,11 @@ public class TokenMessageFactory {
 		// is called dependency injection.
 		// At the end, we can use the PaymentService in tests
 		// without sending actual messages to RabbitMq.
-		var mq = new RabbitMqQueue("localhost");
-		service = new TokenMessageService(mq);
+		var messageQueue = new RabbitMqQueue("localhost");
+
+		//TODO: Check how to add busniss logic here.
+		
+		service = new TokenMessageService(messageQueue, new TokenService(new LocalTokenRepository()));
     //new StudentRegistrationServiceAdapter(service, mq);
 		return service;
   }

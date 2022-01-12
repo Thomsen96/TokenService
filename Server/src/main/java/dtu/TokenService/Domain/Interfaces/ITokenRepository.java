@@ -14,4 +14,6 @@ public interface ITokenRepository {
 	public Collection<Token> getAll();
 	public boolean delete(String customerId);
 
+	public Boolean verifyToken(String token);
+
 }

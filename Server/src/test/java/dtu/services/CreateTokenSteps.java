@@ -19,11 +19,11 @@ public class CreateTokenSteps {
 
   String customerId = null;
   String merchantId = null;
-  private MessageQueue q = mock(MessageQueue.class);
-	private TokenMessageService service = new TokenMessageService(q);
+  private MessageQueue messageQueue = mock(MessageQueue.class);
+  TokenService tokenService = new TokenService(new LocalTokenRepository());
+	private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
   List<Token> tokens = new ArrayList<>();
 
-  TokenService tokenService = new TokenService(new LocalTokenRepository());
 
   @Given("a customer with id {string}")
   public void aCustomerWithId(String customerId) {

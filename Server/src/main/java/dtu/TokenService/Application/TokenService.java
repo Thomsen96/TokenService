@@ -1,6 +1,7 @@
 package dtu.TokenService.Application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Interfaces.ITokenRepository;
@@ -47,4 +48,7 @@ public class TokenService {
 		return tokenRepository.delete(customerId);
 	}
 
+  public Boolean verifyToken(String token) {
+		return tokenRepository.verifyToken(token);
+  }
 }

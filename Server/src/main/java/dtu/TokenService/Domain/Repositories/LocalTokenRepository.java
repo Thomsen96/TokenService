@@ -38,32 +38,20 @@ public class LocalTokenRepository implements ITokenRepository {
 	public boolean delete(String customerId) {
 		List<Token> customerTokens = tokens.stream().filter(cid -> cid.getCustomerId().equals(customerId))
 				.collect(Collectors.toList());
-		if(customerTokens.size() > 0) {
+		if (customerTokens.size() > 0) {
 			tokens.removeAll(customerTokens);
 			return true;
 		}
 		return false;
 	}
 
-	// private static final HashMap<String, Account> tokens = new HashMap<>();
-	//
-	// @Override
-	// public Account get(String tokenId) {
-	// return token.get(tokenId);
-	// }
-	//
-	// @Override
-	// public Collection<Account> getAll() {
-	// return accounts.values();
-	// }
-	//
-	// @Override
-	// public Account create(Account account) {
-	// return accounts.put(account.getId(), account);
-	// }
-	//
-	// @Override
-	// public Account delete(String id) {
-	// return accounts.remove(id);
-	// }
+	@Override
+	public Boolean verifyToken(String token) {
+		List<Token> customerTokens = tokens.stream().filter(t -> t.getUuid().equals(token))
+				.collect(Collectors.toList());
+		if (customerTokens.size() > 0) {
+			return true;
+		}
+		return false;
+	}
 }

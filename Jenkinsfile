@@ -30,9 +30,8 @@ pipeline {
     post {
         always {
             sh 'echo "pipeline complete"'
-            //sh "chmod +x -R ${env.WORKSPACE}"
-            // sh './stop.sh'
-    
+            sh "chmod +x -R ${env.WORKSPACE}"
+             sh './stop.sh'
         }
     }
 }

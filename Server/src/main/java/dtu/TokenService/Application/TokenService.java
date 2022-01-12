@@ -16,6 +16,20 @@ public class TokenService {
 	}
 
 	public List<Token> createTokens(Integer numOfTokens, String customerId) {
+
+		
+		/*
+		try 
+		{
+			if(tokenMessageService.verifyCustomer(customerId) == false)
+			{
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("No connection to MQ");
+		}
+		*/
+
 		List<Token> tokens = tokenRepository.get(customerId);
 		if(numOfTokens > 0 && numOfTokens < 6 && tokens.size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {

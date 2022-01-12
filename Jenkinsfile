@@ -10,7 +10,8 @@ pipeline {
         }
         stage('Build server') {
             steps {
-                sh 'docker build --tag tokenservice_server ./Server'
+                sh 'build_and_run.sh'
+                # sh 'docker build --tag tokenservice_server ./Server'
             }
         }
         stage('Build client') {

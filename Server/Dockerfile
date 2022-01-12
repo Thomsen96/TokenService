@@ -1,11 +1,18 @@
 # Build with: docker build --tag tokenservice_server .
 # Test with: docker run -ti -p 8080:8080 tokenservice_server
 
-FROM adoptopenjdk:11-jre-hotspot
+FROM maven:3.8.4-jdk-11-slim
 COPY target/lib /usr/src/lib
 COPY target/token-service-1.0.0.jar /usr/src/
 WORKDIR /usr/src/
+
+ENV PORT=8181
+EXPOSE 8181
+#CMD java -Xmx64m -jar token-service-1.0.0.jar
 CMD java -Dquarkus.http.port=8182 -Xmx64m -jar token-service-1.0.0.jar
+
+
+
 
 #FROM adoptopenjdk:11-jre-hotspot
 #COPY target/lib /usr/src/lib

@@ -26,12 +26,13 @@ pipeline {
                 //sleep 2
             }
         }
-        post {
-            always {
-                sh 'echo "pipeline complete"'
-                //sh "chmod +x -R ${env.WORKSPACE}"
-                // sh './stop.sh'
-            }
+    }
+    post {
+        always {
+            sh 'echo "pipeline complete"'
+            //sh "chmod +x -R ${env.WORKSPACE}"
+            // sh './stop.sh'
+    
         }
     }
 }

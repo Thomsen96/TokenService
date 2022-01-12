@@ -1,4 +1,5 @@
 package dtu.services;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -41,9 +42,24 @@ public class VerifyCustomerSteps {
 	}
 
 	@Then("the {string} event is sent")
-	public void theEventIsSent(String string) {
-		Event event = new Event(string, new Object[] { customerId });
+	public void theEventIsSent(String sendEventString) {
+		Event event = new Event(sendEventString, new Object[] { customerId });
 		verify(messageQueue).publish(event);
+		
+	}
+	
+	@When("the {string} event is sent with customerId")
+	public void theEventIsSentWithCustomerId(String returnEventString) {
+		// This step simulate the event created by a downstream service.'
+		boolean returnVal = true;
+		service.handleCustomerVerification(new Event(returnEventString,new Object[] {returnVal}));
+	}
+
+	@Then("the customer is verified")
+	public void theCustomerIsVerified() {
+		// Our logic is very simple at the moment; we don't
+		// remember that the student is registered.
+		assertNotNull(customerVerified.join().booleanValue());
 	}
 
 }

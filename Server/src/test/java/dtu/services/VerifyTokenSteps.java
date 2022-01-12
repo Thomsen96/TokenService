@@ -31,7 +31,6 @@ public class VerifyTokenSteps {
     this.customerId = customerId;
 
     token = tokenService.createTokens(1, customerId).get(0).getUuid();
-
   }
 
   @When("a request to verify the token is received")

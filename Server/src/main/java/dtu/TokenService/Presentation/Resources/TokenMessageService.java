@@ -15,6 +15,7 @@ public class TokenMessageService {
 		this.messageQueue = messageQueue;
 		this.tokenService = tokenService;
 		this.messageQueue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequested);
+//		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
 	}
 
 
@@ -24,6 +25,11 @@ public class TokenMessageService {
 		Event event = new Event("CustomerVerificationRequested", new Object[] { customerId });
 		messageQueue.publish(event);
 		return customerVerified.join();
+	}
+	
+	public void handleCustomerVerification(Event e) {
+		var s = e.getArgument(0, Boolean.class);
+		customerVerified.complete(s);
 	}
 
 

@@ -16,32 +16,30 @@ import io.cucumber.java.en.When;
 import messaging.MessageQueue;
 
 public class CreateTokenSteps {
-
-  String customerId = null;
-  String merchantId = null;
-  private MessageQueue messageQueue = mock(MessageQueue.class);
-  TokenService tokenService = new TokenService(new LocalTokenRepository());
+	String customerId = null;
+	String merchantId = null;
+	private MessageQueue messageQueue = mock(MessageQueue.class);
+	TokenService tokenService = new TokenService(new LocalTokenRepository());
 	private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
-  List<Token> tokens = new ArrayList<>();
+	List<Token> tokens = new ArrayList<>();
 
+	@Given("a customer with id {string}")
+	public void aCustomerWithId(String customerId) {
+		this.customerId = customerId;
+	}
 
-  @Given("a customer with id {string}")
-  public void aCustomerWithId(String customerId) {
-    this.customerId = customerId;
-  }
+	@Given("the customer already has {int} tokens")
+	public void theCustomerAlreadyHasTokens(Integer numOfTokens) {
+		tokens = tokenService.createTokens(numOfTokens, customerId);
+	}
 
-  @Given("the customer already has {int} tokens")
-  public void theCustomerAlreadyHasTokens(Integer numOfTokens) {
-    tokens = tokenService.createTokens(numOfTokens, customerId);
-  }
+	@When("the customer requests {int} tokens")
+	public void theCustomerRequestsTokens(Integer numOfTokens) {
+		tokens = tokenService.createTokens(numOfTokens, customerId);
+	}
 
-  @When("the customer requests {int} tokens")
-  public void theCustomerRequestsTokens(Integer numOfTokens) {
-    tokens = tokenService.createTokens(numOfTokens, customerId);
-  }
-
-  @Then("the customer has {int} tokens")
-  public void theCustomerHasTokens(Integer expectedNumOfTokens) {
-    assertEquals(expectedNumOfTokens, tokens.size());
-  }
+	@Then("the customer has {int} tokens")
+	public void theCustomerHasTokens(Integer expectedNumOfTokens) {
+		assertEquals(expectedNumOfTokens, tokens.size());
+	}
 }

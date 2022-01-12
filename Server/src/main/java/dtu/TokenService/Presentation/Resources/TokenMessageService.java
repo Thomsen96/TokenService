@@ -11,7 +11,7 @@ public class TokenMessageService {
 
 	public TokenMessageService(MessageQueue q) {
 		queue = q;
-		queue.addHandler("CustomerVerified", this::handleVerifyCustomer);
+		queue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequested);
 	}
 
 
@@ -25,9 +25,13 @@ public class TokenMessageService {
 
 
   // Handle incoming requests?
-	public void handleVerifyCustomer(Event e) {
-		var s = e.getArgument(0, Boolean.class);
-		customerVerified.complete(s);
+	public void handleTokenVerificationRequested(Event e) {
+		var s = e.getArgument(0, String.class);
+		// TODO: Add business logic about wether the token is valid.
+		Boolean bool = true;
+		Event event = new Event("TokenVerificationResponse", new Object[] { bool });
+		queue.publish(event);
 	}
-  
+
+
 }

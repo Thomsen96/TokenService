@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 @Path("/tokens")
 public class TokenResource  {
 
-	private static TokenService service = new TokenService(new LocalTokenRepository(), new TokenMessageFactory().getService());
+	private static TokenService service = new TokenService(new LocalTokenRepository());
 
 	@POST
 	@Path("{customerId}/{numberOfTokens}")

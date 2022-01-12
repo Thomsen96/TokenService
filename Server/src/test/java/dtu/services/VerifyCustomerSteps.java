@@ -17,34 +17,32 @@ import static org.mockito.Mockito.verify;
 import messaging.Event;
 import messaging.MessageQueue;
 
-
-
 public class VerifyCustomerSteps {
 
   String customerId = null;
-  String merchantId = null;
+  String token = null;
 
   private MessageQueue q = mock(MessageQueue.class);
-	private TokenMessageService service = new TokenMessageService(q);
-	private CompletableFuture<Boolean> customerVerified = new CompletableFuture<>();
+  private TokenMessageService service = new TokenMessageService(q);
+  private CompletableFuture<Boolean> customerVerified = new CompletableFuture<>();
 
-  @Given("A customer with id {string}")
-  public void aCustomerWithId(String customerId) {
+  @Given("A customer with id {string} and token {string}")
+  public void aCustomerWithId(String customerId, String token) {
     this.customerId = customerId;
+    this.token = token;
+
   }
 
-  @When("the customer the event verify the customer have happend")
-  public void theCustomerTheEventVerifyTheCustomerHaveHappend() {
+  @When("a verification of token {string} is received for verification")
+  public void aVerificationOfTokenIsReceivedForVerification(String token) {
+    service.handleTokenVerificationRequested(new Event("TokenVerificationRequested",new Object[] {token}));
     
-    new Thread(() -> {
-			var result = service.verifyCustomer(customerId);
-			customerVerified.complete(result);
-		}).start();
   }
 
-  @Then("the {string} is sent")
-  public void theIsSent(String string) {
-    Event event = new Event(string, new Object[] { customerId });
+  @Then("the token is verified")
+  public void theTokenIsVerified() {
+    Boolean bool = true;
+    Event event = new Event("TokenVerificationResponse", new Object[] { bool });
 		verify(q).publish(event);
   }
 

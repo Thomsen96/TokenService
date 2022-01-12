@@ -9,18 +9,20 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'build.sh'
+                sh "chmod +x -R ${env.WORKSPACE}"
+                sh './build.sh'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'deploy.sh'
+                sh "chmod +x -R ${env.WORKSPACE}"
+                sh './deploy.sh'
             }
         }
         stage('Test') {
             steps {
-                
-                sh'test.sh'
+                sh "chmod +x -R ${env.WORKSPACE}"
+                sh'./test.sh'
                 //sleep 2
             }
         }

@@ -4,12 +4,18 @@ pipeline {
     stages {
         stage('Setup server') {
             steps {
-                sh 'docker rm -f token-service'
+                sh 'docker rm -f tokenservice_server'
+                sh 'docker rm -f tokenservice_client'
             }
         }
         stage('Build server') {
             steps {
                 sh 'docker build --tag tokenservice_server ./Server'
+            }
+        }
+        stage('Build client') {
+            steps {
+                sh 'docker build --tag tokenservice_client ./Client'
             }
         }
         stage('Start Server') {

@@ -9,18 +9,18 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh './build.sh'
+                sh 'build.sh'
             }
         }
         stage('Deploy') {
             steps {
-                sh './deploy.sh'
+                sh 'deploy.sh'
             }
         }
         stage('Test') {
             steps {
                 
-                sh'./test.sh'
+                sh'test.sh'
                 //sleep 2
             }
         }

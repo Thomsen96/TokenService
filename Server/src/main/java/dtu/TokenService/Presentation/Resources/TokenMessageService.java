@@ -15,7 +15,7 @@ public class TokenMessageService {
 		this.messageQueue = messageQueue;
 		this.tokenService = tokenService;
 		this.messageQueue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequested);
-//		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
+		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
 	}
 
 

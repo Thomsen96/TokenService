@@ -43,7 +43,7 @@ public class VerifyTokenSteps {
   public void theTokenIsVerified() {
     Boolean bool = true;
     Event event = new Event("TokenVerificationResponse", new Object[] { bool });
-		verify(messageQueue).publish(event);
+	verify(messageQueue).publish(event);
   }
 
 }

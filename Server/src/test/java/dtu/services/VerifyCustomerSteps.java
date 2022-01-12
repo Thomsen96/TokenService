@@ -1,0 +1,49 @@
+package dtu.services;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.concurrent.CompletableFuture;
+
+import dtu.TokenService.Application.TokenService;
+import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
+import dtu.TokenService.Presentation.Resources.TokenMessageService;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import messaging.Event;
+import messaging.MessageQueue;
+
+public class VerifyCustomerSteps {
+	String customerId = null;
+	String merchantId = null;
+
+	private MessageQueue messageQueue = mock(MessageQueue.class);
+	private TokenService tokenService = new TokenService(new LocalTokenRepository());
+	private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
+	private CompletableFuture<Boolean> customerVerified = new CompletableFuture<>();
+
+
+	@Given("a customer has an id {string}")
+	public void aCustomerHasAnId(String customerId){
+		this.customerId = customerId;
+	}
+
+	@When("the customer is being verified")
+	public void theCustomerIsBeingVerified() {
+		// We have to run the verification in a thread, because
+		// the register method will only finish after the next @When
+		// step is executed.
+		new Thread(() -> {
+			var result = service.verifyCustomer(customerId);
+			customerVerified.complete(result);
+		}).start();
+	}
+
+	@Then("the {string} event is sent")
+	public void theEventIsSent(String string) {
+		Event event = new Event(string, new Object[] { customerId });
+		verify(messageQueue).publish(event);
+	}
+
+}

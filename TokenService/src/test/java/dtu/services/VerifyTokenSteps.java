@@ -41,8 +41,7 @@ public class VerifyTokenSteps {
 
   @Then("the token is verified")
   public void theTokenIsVerified() {
-    Boolean bool = true;
-    Event event = new Event("TokenVerificationResponse", new Object[] { bool });
+    Event event = new Event("TokenVerificationResponse", new Object[] { token });
 	verify(messageQueue).publish(event);
   }
 

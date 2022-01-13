@@ -8,7 +8,7 @@ pushd messaging-utilities-3.2
 ./build.sh
 popd
 
-# Build the services
+# Build the token service
 pushd Server
 ./build.sh
 popd

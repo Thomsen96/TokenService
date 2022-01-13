@@ -1,5 +1,4 @@
 #!/bin/bash
 set -e
-pushd Client
-./stop.sh
-popd
+
+docker-compose down

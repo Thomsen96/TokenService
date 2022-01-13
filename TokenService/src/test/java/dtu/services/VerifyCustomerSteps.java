@@ -50,7 +50,7 @@ public class VerifyCustomerSteps {
 	public void theEventIsSentWithCustomerId(String returnEventString) {
 		// This step simulate the event created by a downstream service.'
 		boolean returnVal = true;
-		messageService.handleCustomerVerification(new Event("..",new Object[] {returnVal}));
+		messageService.handleCustomerVerification(new Event(returnEventString,new Object[] {returnVal}));
 	}
 
 	@Then("the customer is verified")

@@ -36,34 +36,11 @@ public class TokenMessageService {
 
 	
 	
-	
 	// Handler for verification request from Payments that needs to know if the token is valid and the cid for the token.
 	public void handleTokenVerificationRequest(Event e) {
 		var tokenUuid = e.getArgument(0, String.class);
 		Token tokenObj = tokenService.getVerifiedToken(tokenUuid);
-		System.err.println("handleTokenVerificationRequest: " + tokenObj);
 		Event event = new Event("TokenVerificationResponse", new Object[] { tokenObj });
 		messageQueue.publish(event);
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	// Handle incoming requests?
-//	public void handleTokenVerificationRequested(Event e) {
-//		var token = e.getArgument(0, String.class);
-//		Boolean tokenValid = tokenService.verifyToken(token);
-//		Event event = new Event("TokenVerificationResponse", new Object[] { tokenValid });
-//		messageQueue.publish(event);
-//	}
-
-
 }

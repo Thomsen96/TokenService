@@ -31,7 +31,6 @@ public class VerifyTokenSteps {
   public void aCustomerWithId(String customerId) {
     this.customerId = customerId;
     token = tokenService.createTokens(1, customerId).stream().findFirst().get();
-    System.err.println(token);
   }
 
   @When("a request to verify the token is received")

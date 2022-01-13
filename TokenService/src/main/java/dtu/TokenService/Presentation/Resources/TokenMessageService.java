@@ -8,6 +8,7 @@ import messaging.MessageQueue;
 import dtu.TokenService.Domain.Entities.Token;
 
 public class TokenMessageService {
+	
 	private MessageQueue messageQueue;
 	private CompletableFuture<Boolean> customerVerified;
 	private TokenService tokenService;
@@ -34,6 +35,23 @@ public class TokenMessageService {
 		customerVerified.complete(s);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	// Handler for verification request from Payments that needs to know if the token is valid and the cid for the token.

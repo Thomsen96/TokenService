@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import dtu.TokenService.Application.TokenService;
@@ -21,7 +22,7 @@ public class CreateTokenSteps {
 	//private MessageQueue messageQueue = mock(MessageQueue.class);
 	TokenService tokenService = new TokenService(new LocalTokenRepository());
 	//private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
-	List<Token> tokens = new ArrayList<>();
+	HashSet<Token> tokens = new HashSet<>();
 
 	@Given("a customer with id {string}")
 	public void aCustomerWithId(String customerId) {

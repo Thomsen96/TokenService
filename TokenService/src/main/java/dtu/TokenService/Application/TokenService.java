@@ -1,5 +1,6 @@
 package dtu.TokenService.Application;
 
+import java.util.HashSet;
 import java.util.List;
 
 import dtu.TokenService.Domain.Entities.Token;
@@ -15,17 +16,16 @@ public class TokenService {
 		this.tokenRepository = tokenRepository;
 	}
 
-	public List<Token> createTokens(Integer numOfTokens, String customerId) {
-		List<Token> tokens = tokenRepository.get(customerId);
-		if(numOfTokens > 0 && numOfTokens < 6 && tokens.size() < 2) {
+	public HashSet<Token> createTokens(Integer numOfTokens, String customerId) {
+		if(numOfTokens > 0 && numOfTokens < 6 && tokenRepository.get(customerId).size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {
-				tokens.add(tokenRepository.create(customerId));
+				tokenRepository.create(customerId);
 			}
 		}
-		return tokens;
+		return tokenRepository.get(customerId);
 	}
 
-	public List<Token> getTokens(String customerId) {
+	public HashSet<Token> getTokens(String customerId) {
 		return tokenRepository.get(customerId);
 	}
 

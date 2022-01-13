@@ -6,63 +6,61 @@ import dtu.TokenService.Domain.Interfaces.ITokenRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class LocalTokenRepository implements ITokenRepository {
 
 	List<Token> tokens = new ArrayList<>();
+	HashMap<String, Token> tokenHashMap = new HashMap<>();
+	HashMap<String, HashSet<Token>> customerHashMap = new HashMap<>();
+
 
 	@Override
-	public List<Token> get(String customerId) {
-		List<Token> customerTokens = tokens.stream().filter(cid -> cid.getCustomerId().equals(customerId))
-				.collect(Collectors.toList());
-		return customerTokens;
+	public HashSet<Token> get(String customerId) {
+		if(!customerHashMap.containsKey(customerId)) {
+			customerHashMap.put(customerId, new HashSet<Token>());
+		}
+		return customerHashMap.get(customerId);
 	}
 
 	@Override
 	public Token create(String customerId) {
 		Token token = new Token(customerId);
-		tokens.add(token);
+		tokenHashMap.put(token.getUuid(), token);
+		if (customerHashMap.containsKey(customerId)) {
+			customerHashMap.get(customerId).add(token);
+		}
+		else {
+			var tokenSet = new HashSet<Token>();
+			tokenSet.add(token);
+			customerHashMap.put(customerId, tokenSet);
+		}
 		return token;
 	}
 
 	@Override
-	public Collection<Token> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean delete(String customerId) {
-		List<Token> customerTokens = tokens.stream().filter(cid -> cid.getCustomerId().equals(customerId))
-				.collect(Collectors.toList());
-		if (customerTokens.size() > 0) {
-			tokens.removeAll(customerTokens);
-			return true;
+		var tokensToRemove = customerHashMap.remove(customerId);
+		for (Token token : tokensToRemove) {
+			tokenHashMap.remove(token.getUuid());
 		}
-		return false;
+		return true;
 	}
-
-//	@Override
-//	public Boolean verifyToken(String token) {
-//		List<Token> customerTokens = tokens.stream().filter(t -> t.getUuid().equals(token)).collect(Collectors.toList());
-//		if (customerTokens.size() > 0) {
-//			return true;
-//		}
-//		return false;
-//	}
 
 	@Override
 	public Token getVerfiedToken(String tokenUuid) {
-		Token returnToken;
-		for (Token token : tokens) {
-			if(token.getUuid().equals(tokenUuid)) {
-				returnToken = token;
-				tokens.remove(token);
-				return returnToken;
-			}
+		try {
+			var token = tokenHashMap.remove(tokenUuid);
+			customerHashMap.get(token.getCustomerId()).remove(token);
+			return token;
+		} catch (Exception e) {
+			return new Token(false);
 		}
-		return new Token(false);
+	}
+	@Override
+	public HashSet<Token> getAll() {
+		return null;
 	}
 }

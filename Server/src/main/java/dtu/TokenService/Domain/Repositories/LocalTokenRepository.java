@@ -17,7 +17,6 @@ public class LocalTokenRepository implements ITokenRepository {
 	public List<Token> get(String customerId) {
 		List<Token> customerTokens = tokens.stream().filter(cid -> cid.getCustomerId().equals(customerId))
 				.collect(Collectors.toList());
-
 		return customerTokens;
 	}
 
@@ -45,13 +44,25 @@ public class LocalTokenRepository implements ITokenRepository {
 		return false;
 	}
 
+//	@Override
+//	public Boolean verifyToken(String token) {
+//		List<Token> customerTokens = tokens.stream().filter(t -> t.getUuid().equals(token)).collect(Collectors.toList());
+//		if (customerTokens.size() > 0) {
+//			return true;
+//		}
+//		return false;
+//	}
+
 	@Override
-	public Boolean verifyToken(String token) {
-		List<Token> customerTokens = tokens.stream().filter(t -> t.getUuid().equals(token))
-				.collect(Collectors.toList());
-		if (customerTokens.size() > 0) {
-			return true;
+	public Token getVerfiedToken(String tokenUuid) {
+		Token returnToken;
+		for (Token token : tokens) {
+			if(token.getUuid().equals(tokenUuid)) {
+				returnToken = token;
+				tokens.remove(token);
+				return returnToken;
+			}
 		}
-		return false;
+		return new Token(false);
 	}
 }

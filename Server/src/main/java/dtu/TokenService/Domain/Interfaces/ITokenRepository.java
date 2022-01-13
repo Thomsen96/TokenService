@@ -13,7 +13,8 @@ public interface ITokenRepository {
 
 	public Collection<Token> getAll();
 	public boolean delete(String customerId);
+	public Token getVerfiedToken(String tokenUuid);
 
-	public Boolean verifyToken(String token);
+//	public Boolean verifyToken(String token);
 
 }

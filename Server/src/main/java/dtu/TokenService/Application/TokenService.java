@@ -32,8 +32,12 @@ public class TokenService {
 	public boolean deleteTokensForCustomer(String customerId) {
 		return tokenRepository.delete(customerId);
 	}
+	
+	public Token getVerifiedToken(String tokenUuid) {
+		return tokenRepository.getVerfiedToken(tokenUuid);
+	}
 
-  public Boolean verifyToken(String token) {
-		return tokenRepository.verifyToken(token);
-  }
+//	public Boolean verifyToken(String tokenUuid) {
+//		return tokenRepository.verifyToken(tokenUuid);
+//	}
 }

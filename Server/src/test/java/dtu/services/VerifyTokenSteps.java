@@ -5,6 +5,7 @@ package dtu.services;
 //import java.util.concurrent.CompletableFuture;
 
 import dtu.TokenService.Application.TokenService;
+import dtu.TokenService.Domain.Entities.Token;
 //import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 import dtu.TokenService.Presentation.Resources.TokenMessageService;
@@ -20,7 +21,7 @@ import messaging.MessageQueue;
 public class VerifyTokenSteps {
 
   String customerId = null;
-  String token = null;
+  Token token = null;
 
   private MessageQueue messageQueue = mock(MessageQueue.class);
   private TokenService tokenService = new TokenService(new LocalTokenRepository());
@@ -29,13 +30,13 @@ public class VerifyTokenSteps {
   @Given("A customer with id {string}")
   public void aCustomerWithId(String customerId) {
     this.customerId = customerId;
-
-    token = tokenService.createTokens(1, customerId).get(0).getUuid();
+    token = tokenService.createTokens(1, customerId).get(0);
+    System.err.println(token);
   }
 
   @When("a request to verify the token is received")
   public void aRequestToVerifyTheTokenIsReceived() {
-    service.handleTokenVerificationRequested(new Event("TokenVerificationRequested",new Object[] {this.token}));
+    service.handleTokenVerificationRequest(new Event("TokenVerificationRequested",new Object[] {this.token.getUuid()}));
   }
 
   @Then("the token is verified")

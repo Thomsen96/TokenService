@@ -21,9 +21,8 @@ public class VerifyCustomerSteps {
 
 	private MessageQueue messageQueue = mock(MessageQueue.class);
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
-	private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
+	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
 	private CompletableFuture<Boolean> customerVerified = new CompletableFuture<>();
-
 
 	@Given("a customer has an id {string}")
 	public void aCustomerHasAnId(String customerId){
@@ -36,7 +35,7 @@ public class VerifyCustomerSteps {
 		// the register method will only finish after the next @When
 		// step is executed.
 		new Thread(() -> {
-			var result = service.verifyCustomer(customerId);
+			var result = messageService.verifyCustomer(customerId);
 			customerVerified.complete(result);
 		}).start();
 	}
@@ -45,14 +44,13 @@ public class VerifyCustomerSteps {
 	public void theEventIsSent(String sendEventString) {
 		Event event = new Event(sendEventString, new Object[] { customerId });
 		verify(messageQueue).publish(event);
-		
 	}
 	
 	@When("the {string} event is sent with customerId")
 	public void theEventIsSentWithCustomerId(String returnEventString) {
 		// This step simulate the event created by a downstream service.'
 		boolean returnVal = true;
-		service.handleCustomerVerification(new Event(returnEventString,new Object[] {returnVal}));
+		messageService.handleCustomerVerification(new Event(returnEventString,new Object[] {returnVal}));
 	}
 
 	@Then("the customer is verified")

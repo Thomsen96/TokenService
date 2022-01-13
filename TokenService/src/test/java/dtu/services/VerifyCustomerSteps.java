@@ -24,6 +24,9 @@ public class VerifyCustomerSteps {
 	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
 	private CompletableFuture<Boolean> customerVerified = new CompletableFuture<>();
 
+	public VerifyCustomerSteps() {
+		
+	}
 	@Given("a customer has an id {string}")
 	public void aCustomerHasAnId(String customerId){
 		this.customerId = customerId;

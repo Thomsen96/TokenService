@@ -8,14 +8,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class LocalTokenRepository implements ITokenRepository {
-
-	List<Token> tokens = new ArrayList<>();
-	HashMap<String, Token> tokenHashMap = new HashMap<>();
-	HashMap<String, HashSet<Token>> customerHashMap = new HashMap<>();
-
+	ConcurrentHashMap<String, Token> tokenHashMap = new ConcurrentHashMap<>();
+	ConcurrentHashMap<String, HashSet<Token>> customerHashMap = new ConcurrentHashMap<>();
 
 	@Override
 	public HashSet<Token> get(String customerId) {

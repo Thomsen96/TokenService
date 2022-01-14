@@ -1,12 +1,9 @@
 package dtu.services;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
@@ -15,18 +12,16 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import messaging.Event;
-import messaging.MessageQueue;
 import messaging.implementations.MockMessageQueue;
 
 public class VerifyCustomerSteps {
 	String customerId = null;
 	String merchantId = null;
 	
-	private CompletableFuture<Event> eventPublished = new CompletableFuture<>();
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
 	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
-	private CompletableFuture<Event> customerVerificationRequest = new CompletableFuture<>();
+	private CompletableFuture<Event> customerVerificationResponseComplete = new CompletableFuture<>();
 
 	private Event customerVerificationResponse;
 
@@ -48,6 +43,7 @@ public class VerifyCustomerSteps {
 		// step is executed.
 		new Thread(() -> {
 			customerVerificationResponse  = messageService.verifyCustomer(customerId);
+			customerVerificationResponseComplete.complete(customerVerificationResponse);
 		}).start();
 	}
 
@@ -68,6 +64,6 @@ public class VerifyCustomerSteps {
 
 	@Then("the customer is verified")
 	public void theCustomerIsVerified() {
-		assertTrue(customerVerificationResponse.getArgument(0, boolean.class));
+		assertTrue(customerVerificationResponseComplete.join().getArgument(0, boolean.class));
 	}
 }

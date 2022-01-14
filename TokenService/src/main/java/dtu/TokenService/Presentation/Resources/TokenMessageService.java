@@ -21,7 +21,7 @@ public class TokenMessageService {
 
 	// We send a verification request meant for AccountService with the customerId
 	public Event verifyCustomer(String customerId) {
-		customerVerified = new CompletableFuture<>();
+		customerVerified = new CompletableFuture<Event>();
 		Event event = new Event("CustomerVerificationRequested", new Object[] { customerId });
 		messageQueue.publish(event);
 		return customerVerified.join();

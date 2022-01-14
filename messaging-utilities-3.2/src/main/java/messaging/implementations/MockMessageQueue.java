@@ -2,10 +2,8 @@ package messaging.implementations;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -18,9 +16,6 @@ public class MockMessageQueue implements MessageQueue {
 
   static Set<Event> events = Collections.newSetFromMap(new ConcurrentHashMap<Event, Boolean>());
 
-
-
-  public static Stack<Event> eventStack = new Stack<>();
 
   public Boolean verify(Event message)
   {
@@ -39,9 +34,6 @@ public class MockMessageQueue implements MessageQueue {
   public void publish(Event message) {
     System.err.println("Thread: " + Thread.currentThread().getId() + " publish " + message);
     events.add(message);
-    eventStack.push(message);
-
-    //handlers.get(message.getType()).accept(message);
   }
   
   @Override

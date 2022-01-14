@@ -24,6 +24,11 @@ public class TokenMessageService {
 	public Boolean verifyCustomer(String customerId) {
 		customerVerified = new CompletableFuture<>();
 		Event event = new Event("CustomerVerificationRequested", new Object[] { customerId });
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		messageQueue.publish(event);
 		return customerVerified.join();
 	}

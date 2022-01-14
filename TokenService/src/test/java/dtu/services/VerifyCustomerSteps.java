@@ -1,9 +1,11 @@
 package dtu.services;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
@@ -17,8 +19,22 @@ import messaging.MessageQueue;
 public class VerifyCustomerSteps {
 	String customerId = null;
 	String merchantId = null;
+	
+	private CompletableFuture<Boolean> eventPublished = new CompletableFuture<>();
+	private MessageQueue messageQueue = new MessageQueue() {
+		
+		@Override
+		public void publish(Event message) {
+			eventPublished.complete(true);
+		}
+		
+		@Override
+		public void addHandler(String eventType, Consumer<Event> handler) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 
-	private MessageQueue messageQueue = mock(MessageQueue.class);
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
 	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
 	private CompletableFuture<Boolean> customerVerified = new CompletableFuture<>();
@@ -44,14 +60,15 @@ public class VerifyCustomerSteps {
 
 	@Then("the {string} event is sent")
 	public void theEventIsSent(String sendEventString) {
-		Event event = new Event(sendEventString, new Object[] { customerId });
-		verify(messageQueue).publish(event);
+//		Event event = new Event(sendEventString, new Object[] { customerId }); // 	"CustomerVerificationRequested"
+//		verify(messageQueue).publish(event);
+		assertTrue(eventPublished.join());
 	}
 	
 	@When("the {string} event is sent with customerId")
 	public void theEventIsSentWithCustomerId(String returnEventString) {
 		// This step simulate the event created by a downstream service.'
-		boolean returnVal = true;
+		boolean returnVal = true;					// "CustomerVerified"
 		messageService.handleCustomerVerification(new Event(returnEventString,new Object[] {returnVal}));
 	}
 

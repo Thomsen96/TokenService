@@ -30,13 +30,14 @@ public class MockMessageQueue implements MessageQueue {
 
   public Event getEvent(String topic)
   {
+    System.err.println("Thread: " + Thread.currentThread().getId() + " getEvent " + topic); 
     return events.stream().filter(t -> t.getType().equals(topic)).findFirst().get();
   }
 
   
   @Override
   public void publish(Event message) {
-    System.err.println("publish " + message);
+    System.err.println("Thread: " + Thread.currentThread().getId() + " publish " + message);
     events.add(message);
     eventStack.push(message);
 
@@ -45,7 +46,7 @@ public class MockMessageQueue implements MessageQueue {
   
   @Override
   public void addHandler(String eventType, Consumer<Event> handler) {
-    System.err.println("addHandler " + eventType);
+    System.err.println("Thread: " + Thread.currentThread().getId() + " addHandler " + eventType);
     handlers.put(eventType, handler);
   }
 

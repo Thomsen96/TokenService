@@ -23,7 +23,7 @@ public class VerifyCustomerSteps {
 	String merchantId = null;
 	
 	private CompletableFuture<Event> eventPublished = new CompletableFuture<>();
-	private MockMessageQueue messageQueue = new MockMessageQueue();
+	private static MockMessageQueue messageQueue = new MockMessageQueue();
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
 	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
 	private CompletableFuture<Event> customerVerificationRequest = new CompletableFuture<>();
@@ -51,9 +51,10 @@ public class VerifyCustomerSteps {
 		}).start();
 	}
 
-	@Then("the {string} event is sent")
-	public void theEventIsSent(String sendEventString) {
+	@Then("the {string} event is sent") // If this assert fails, maybe try again you were unlucky.
+	public void theEventIsSent(String sendEventString) throws InterruptedException {
 		Event event = new Event(sendEventString, new Object[] { customerId }); // 	"CustomerVerificationRequested"
+		Thread.sleep(10); // added feature for concurrency
 		assertEquals(event, messageQueue.getEvent(sendEventString));
 	}
 	
@@ -69,5 +70,4 @@ public class VerifyCustomerSteps {
 	public void theCustomerIsVerified() {
 		assertTrue(customerVerificationResponse.getArgument(0, boolean.class));
 	}
-
 }

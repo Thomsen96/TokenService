@@ -9,7 +9,7 @@ import dtu.TokenService.Domain.Entities.Token;
 
 public class TokenMessageService {
 	private MessageQueue messageQueue;
-	private CompletableFuture<Boolean> customerVerified;
+	private CompletableFuture<Event> customerVerified;
 	private TokenService tokenService;
 
 	public TokenMessageService(MessageQueue messageQueue, TokenService tokenService) {
@@ -20,7 +20,7 @@ public class TokenMessageService {
 	}
 
 	// We send a verification request meant for AccountService with the customerId
-	public Boolean verifyCustomer(String customerId) {
+	public Event verifyCustomer(String customerId) {
 		customerVerified = new CompletableFuture<>();
 		Event event = new Event("CustomerVerificationRequested", new Object[] { customerId });
 		messageQueue.publish(event);
@@ -29,8 +29,8 @@ public class TokenMessageService {
 
 	// Handler for verification response from AccountService in the form of a boolean to see if the customer is registered.
 	public void handleCustomerVerification(Event e) {
-		var s = e.getArgument(0, Boolean.class);
-		customerVerified.complete(s);
+		System.err.println("handleCustomerVerification" + e);
+		customerVerified.complete(e);
 	}
 
 	

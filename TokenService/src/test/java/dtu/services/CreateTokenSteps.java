@@ -31,12 +31,12 @@ public class CreateTokenSteps {
 
 	@Given("the customer already has {int} tokens")
 	public void theCustomerAlreadyHasTokens(Integer numOfTokens) {
-		tokens = tokenService.createTokens(numOfTokens, customerId);
+		tokens = tokenService.createTokens(customerId, numOfTokens);
 	}
 
 	@When("the customer requests {int} tokens")
 	public void theCustomerRequestsTokens(Integer numOfTokens) {
-		tokens = tokenService.createTokens(numOfTokens, customerId);
+		tokens = tokenService.createTokens(customerId, numOfTokens);
 	}
 
 	@Then("the customer has {int} tokens")

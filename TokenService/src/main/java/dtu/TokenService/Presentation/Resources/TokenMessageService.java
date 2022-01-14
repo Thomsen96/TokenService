@@ -19,16 +19,10 @@ public class TokenMessageService {
 		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
 	}
 
-
 	// We send a verification request meant for AccountService with the customerId
 	public Boolean verifyCustomer(String customerId) {
 		customerVerified = new CompletableFuture<>();
 		Event event = new Event("CustomerVerificationRequested", new Object[] { customerId });
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		messageQueue.publish(event);
 		return customerVerified.join();
 	}

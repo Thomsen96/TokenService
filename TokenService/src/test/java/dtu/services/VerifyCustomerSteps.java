@@ -1,4 +1,5 @@
 package dtu.services;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -20,18 +21,16 @@ public class VerifyCustomerSteps {
 	String customerId = null;
 	String merchantId = null;
 	
-	private CompletableFuture<Boolean> eventPublished = new CompletableFuture<>();
+	private CompletableFuture<Event> eventPublished = new CompletableFuture<>();
 	private MessageQueue messageQueue = new MessageQueue() {
 		
 		@Override
 		public void publish(Event message) {
-			eventPublished.complete(true);
+			eventPublished.complete(message);
 		}
 		
 		@Override
 		public void addHandler(String eventType, Consumer<Event> handler) {
-			// TODO Auto-generated method stub
-			
 		}
 	};
 
@@ -60,9 +59,9 @@ public class VerifyCustomerSteps {
 
 	@Then("the {string} event is sent")
 	public void theEventIsSent(String sendEventString) {
-//		Event event = new Event(sendEventString, new Object[] { customerId }); // 	"CustomerVerificationRequested"
+		Event event = new Event(sendEventString, new Object[] { customerId }); // 	"CustomerVerificationRequested"
 //		verify(messageQueue).publish(event);
-		assertTrue(eventPublished.join());
+		assertEquals(event, eventPublished.join());
 	}
 	
 	@When("the {string} event is sent with customerId")

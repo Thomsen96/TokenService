@@ -12,12 +12,13 @@ public class TokenResource  {
 
 	private static TokenService service = new TokenService(new LocalTokenRepository());
 
-	@POST
-	@Path("{customerId}/{numberOfTokens}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@PathParam("customerId") String customerId, @PathParam("numberOfTokens") Integer numberOfTokens) {
-		return Response.status(Response.Status.CREATED).entity(service.createTokens(numberOfTokens,customerId)).build();
-	}
+//	TODO: REPLACE WITH THE ONE ABOVE WHEN REST SERVICE HAS BEEN TESTED
+//	@POST
+//	@Path("{customerId}/{numberOfTokens}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response create(@PathParam("customerId") String customerId, @PathParam("numberOfTokens") Integer numberOfTokens) {
+//		return Response.status(Response.Status.CREATED).entity(service.createTokens(numberOfTokens,customerId)).build();
+//	}
 
 	@GET
 	@Path("{customerId}")

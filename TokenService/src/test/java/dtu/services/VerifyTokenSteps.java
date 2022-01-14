@@ -30,7 +30,7 @@ public class VerifyTokenSteps {
   @Given("A customer with id {string}")
   public void aCustomerWithId(String customerId) {
     this.customerId = customerId;
-    token = tokenService.createTokens(1, customerId).stream().findFirst().get();
+    token = tokenService.createTokens(customerId, 1).stream().findFirst().get();
   }
 
   @When("a request to verify the token is received")

@@ -16,6 +16,7 @@ public class TokenMessageService {
 		this.messageQueue = messageQueue;
 		this.tokenService = tokenService;
 		this.messageQueue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequest);
+		this.messageQueue.addHandler("TokenCreationRequest", this::handleTokenCreationRequest);
 		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
 	}
 
@@ -33,7 +34,15 @@ public class TokenMessageService {
 		customerVerified.complete(e);
 	}
 
-	
+	public void handleTokenCreationRequest(Event e) {
+		var customerId = e.getArgument(0, String.class);
+		var numOfTokens = e.getArgument(1, Integer.class);
+		var sessionId = e.getArgument(2, String.class);
+//								TODO: CHANGE TO createTokens WHEN REST SERVICE HAS BEEN TESTED!
+		Token tokenObj = tokenService.createAndReturnSingleToken(customerId, numOfTokens);
+		Event event = new Event("TokenCreationResponse" + "#" + sessionId, new Object[] { tokenObj });
+		messageQueue.publish(event);
+	}
 	
 	// Handler for verification request from Payments that needs to know if the token is valid and the cid for the token.
 	public void handleTokenVerificationRequest(Event e) {

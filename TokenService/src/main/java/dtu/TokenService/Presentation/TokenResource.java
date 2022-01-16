@@ -1,4 +1,4 @@
-package dtu.TokenService.Presentation.Resources;
+package dtu.TokenService.Presentation;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;

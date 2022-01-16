@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
-import dtu.TokenService.Presentation.Resources.TokenMessageService;
+import dtu.TokenService.Presentation.TokenEventHandler;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,7 +20,7 @@ public class VerifyCustomerSteps {
 	
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
-	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
+	private TokenEventHandler messageService = new TokenEventHandler(messageQueue, tokenService);
 	private CompletableFuture<Event> customerVerificationResponseComplete = new CompletableFuture<>();
 
 	private Event customerVerificationResponse;

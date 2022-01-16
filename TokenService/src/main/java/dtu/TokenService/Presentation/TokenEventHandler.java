@@ -1,4 +1,4 @@
-package dtu.TokenService.Presentation.Resources;
+package dtu.TokenService.Presentation;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -7,12 +7,12 @@ import messaging.Event;
 import messaging.MessageQueue;
 import dtu.TokenService.Domain.Entities.Token;
 
-public class TokenMessageService {
+public class TokenEventHandler {
 	private MessageQueue messageQueue;
 	private CompletableFuture<Event> customerVerified;
 	private TokenService tokenService;
 
-	public TokenMessageService(MessageQueue messageQueue, TokenService tokenService) {
+	public TokenEventHandler(MessageQueue messageQueue, TokenService tokenService) {
 		this.messageQueue = messageQueue;
 		this.tokenService = tokenService;
 		this.messageQueue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequest);

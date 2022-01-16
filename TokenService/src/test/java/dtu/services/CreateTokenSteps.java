@@ -3,9 +3,7 @@ package dtu.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.mockito.Mockito.mock;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Entities.Token;

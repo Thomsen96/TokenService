@@ -4,7 +4,6 @@ import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/tokens")

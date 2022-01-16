@@ -50,7 +50,7 @@ public class VerifyCustomerSteps {
 	@Then("the {string} event is sent") // If this assert fails, maybe try again you were unlucky.
 	public void theEventIsSent(String sendEventString) throws InterruptedException {
 		Event event = new Event(sendEventString, new Object[] { customerId }); // 	"CustomerVerificationRequested"
-		Thread.sleep(10); // added feature for concurrency
+		Thread.sleep(20); // added feature for concurrency
 		assertEquals(event, messageQueue.getEvent(sendEventString));
 	}
 	

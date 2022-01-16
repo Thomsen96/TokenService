@@ -42,4 +42,8 @@ public class TokenService {
 	public Token getVerifiedToken(String tokenUuid) {
 		return tokenRepository.getVerfiedToken(tokenUuid);
 	}
+
+	public String getStatus() {
+		return "Token service ready";
+	}
 }

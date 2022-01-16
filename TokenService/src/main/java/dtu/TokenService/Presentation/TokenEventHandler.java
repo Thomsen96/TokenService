@@ -15,9 +15,16 @@ public class TokenEventHandler {
 	public TokenEventHandler(MessageQueue messageQueue, TokenService tokenService) {
 		this.messageQueue = messageQueue;
 		this.tokenService = tokenService;
+		this.messageQueue.addHandler("TokenStatusRequest", this::handleTokenStatusRequest);
 		this.messageQueue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequest);
 		this.messageQueue.addHandler("TokenCreationRequest", this::handleTokenCreationRequest);
 		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
+	}
+
+	public void handleTokenStatusRequest(Event e) {
+		System.out.println("Received a request to send back to status the service");
+		Event event = new Event("TokenStatusResponse", new Object[] {tokenService.getStatus()});
+		messageQueue.publish(event);
 	}
 
 	// We send a verification request meant for AccountService with the customerId

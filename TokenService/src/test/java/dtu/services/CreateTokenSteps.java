@@ -1,24 +1,17 @@
 package dtu.services;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.mockito.Mockito.mock;
-
-import java.util.HashSet;
-import java.util.concurrent.CompletableFuture;
-
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 import dtu.TokenService.Infrastructure.AccountAccess;
-import dtu.TokenService.Presentation.TokenEventHandler;
-//import dtu.TokenService.Presentation.Resources.TokenMessageService;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-//import messaging.MessageQueue;
-import messaging.Event;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import messaging.implementations.MockMessageQueue;
 
+import java.util.HashSet;
 public class CreateTokenSteps {
 //	String customerId = null;
 //	String merchantId = null;

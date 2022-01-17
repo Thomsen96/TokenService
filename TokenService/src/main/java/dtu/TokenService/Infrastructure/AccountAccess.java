@@ -2,7 +2,6 @@ package dtu.TokenService.Infrastructure;
 
 import java.util.concurrent.CompletableFuture;
 
-import dtu.TokenService.Domain.Interfaces.ITokenRepository;
 import messaging.Event;
 import messaging.MessageQueue;
 
@@ -14,10 +13,6 @@ public class AccountAccess {
 	public AccountAccess(MessageQueue messageQueue) {
 		this.messageQueue = messageQueue;
 	}
-
-
-
-
 
 	public Event verifyCustomerId(String customerId, String sessionId) {
 		customerVerified = new CompletableFuture<Event>();

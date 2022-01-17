@@ -3,10 +3,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CompletableFuture;
 
-import dtu.TokenService.Application.TokenService;
-import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 import dtu.TokenService.Infrastructure.AccountAccess;
-import dtu.TokenService.Presentation.TokenEventHandler;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,7 +17,6 @@ public class VerifyCustomerSteps {
 	
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
 	private static AccountAccess accountAccess = new AccountAccess(messageQueue);
-	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
 	private Event customerVerificationResponse;
 	private CompletableFuture<Event> customerVerificationResponseComplete = new CompletableFuture<>();
 

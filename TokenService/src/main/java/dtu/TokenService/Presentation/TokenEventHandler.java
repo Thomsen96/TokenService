@@ -1,8 +1,5 @@
 package dtu.TokenService.Presentation;
 
-import java.util.HashSet;
-import java.util.concurrent.CompletableFuture;
-
 import dtu.TokenService.Application.TokenService;
 import messaging.Event;
 import messaging.MessageQueue;
@@ -10,7 +7,6 @@ import dtu.TokenService.Domain.Entities.Token;
 
 public class TokenEventHandler {
 	private MessageQueue messageQueue;
-	private CompletableFuture<Event> customerVerified;
 	private TokenService tokenService;
 
 	public TokenEventHandler(MessageQueue messageQueue, TokenService tokenService) {

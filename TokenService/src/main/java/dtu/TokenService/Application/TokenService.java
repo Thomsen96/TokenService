@@ -2,8 +2,6 @@ package dtu.TokenService.Application;
 
 import java.util.HashSet;
 
-import javax.ws.rs.core.Response;
-
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Interfaces.ITokenRepository;
 import dtu.TokenService.Infrastructure.AccountAccess;

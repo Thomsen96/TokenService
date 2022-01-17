@@ -1,12 +1,7 @@
 package dtu.services;
 
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.concurrent.CompletableFuture;
-
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Entities.Token;
-//import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
 import dtu.TokenService.Infrastructure.AccountAccess;
 import dtu.TokenService.Presentation.TokenEventHandler;
@@ -16,14 +11,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 
 import messaging.Event;
-import messaging.MessageQueue;
 import messaging.implementations.MockMessageQueue;
 
 public class VerifyTokenSteps {

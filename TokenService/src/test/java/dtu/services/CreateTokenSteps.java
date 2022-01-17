@@ -8,7 +8,6 @@ import java.util.HashSet;
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
-//import dtu.TokenService.Presentation.Resources.TokenMessageService;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,9 +16,7 @@ import io.cucumber.java.en.When;
 public class CreateTokenSteps {
 	String customerId = null;
 	String merchantId = null;
-	//private MessageQueue messageQueue = mock(MessageQueue.class);
 	TokenService tokenService = new TokenService(new LocalTokenRepository());
-	//private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
 	HashSet<Token> tokens = new HashSet<>();
 
 	@Given("a customer with id {string}")

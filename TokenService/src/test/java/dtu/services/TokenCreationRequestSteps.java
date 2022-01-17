@@ -2,7 +2,7 @@ package dtu.services;
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
-import dtu.TokenService.Presentation.Resources.TokenMessageService;
+import dtu.TokenService.Presentation.TokenEventHandler;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -21,7 +21,7 @@ public class TokenCreationRequestSteps {
 
 	private MessageQueue messageQueue = mock(MessageQueue.class);
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
-	private TokenMessageService service = new TokenMessageService(messageQueue, tokenService);
+	private TokenEventHandler service = new TokenEventHandler(messageQueue, tokenService);
 
 
 //	@Given("^A customer with id \"([^\"]*)\" requests (\\d+) token with sessionId \"([^\"]*)\"$")

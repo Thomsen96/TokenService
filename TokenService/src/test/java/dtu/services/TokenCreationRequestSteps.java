@@ -7,13 +7,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import messaging.Event;
 import messaging.MessageQueue;
-import messaging.implementations.MockMessageQueue;
 
 public class TokenCreationRequestSteps {
 
@@ -21,11 +18,16 @@ public class TokenCreationRequestSteps {
 	int numOfTokens;
 	String sessionId;
 	Token token = null;
-	private static MockMessageQueue messageQueue = new MockMessageQueue();
-//	private MessageQueue messageQueue = mock(MessageQueue.class);
-	private TokenService tokenService = new TokenService(new LocalTokenRepository());
-	private TokenEventHandler messageService = new TokenEventHandler(messageQueue, tokenService);
 
+	private MessageQueue messageQueue = mock(MessageQueue.class);
+	private TokenService tokenService = new TokenService(new LocalTokenRepository());
+	private TokenEventHandler service = new TokenEventHandler(messageQueue, tokenService);
+
+
+//	@Given("^A customer with id \"([^\"]*)\" requests (\\d+) token with sessionId \"([^\"]*)\"$")
+//	public void aCustomerWithIdRequestsTokenWithSessionId(String arg1, int arg2, String arg3) throws Throwable {
+//		throw new PendingException();
+//	}
 	@Given("A customer with id {string} requests {int} token with sessionId {string}")
 	public void aCustomerWithId(String customerId, int numOfTokens, String sessionId) {
 		this.customerId = customerId;
@@ -35,13 +37,14 @@ public class TokenCreationRequestSteps {
 
 	@When("a request to create and receive new tokens is received")
 	public void aRequestToCreateAndReceiveNewTokensIsReceived() {
-//		token = tokenService.createTokens(customerId, numOfTokens).iterator().next();
+		token = tokenService.createTokens(customerId, 1).iterator().next();
 		Event incommingEvent = new Event("TokenCreationRequest",new Object[] {customerId, numOfTokens, sessionId});
-		messageService.handleTokenCreationRequest(incommingEvent);
+		service.handleTokenCreationRequest(incommingEvent);
 	}
 
 	@Then("the tokens are sent")
 	public void theTokensAreSent() {
-		assertEquals("TokenCreationResponse#" + sessionId, messageQueue.getEvent("TokenCreationResponse#" + sessionId).getType());
+		Event event = new Event("TokenCreationResponse" + "#" + sessionId, new Object[] { token });
+		verify(messageQueue).publish(event);
 	}
 }

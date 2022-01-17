@@ -25,9 +25,6 @@ public class VerifyCustomerSteps {
 
 	private Event customerVerificationResponse;
 
-
-	
-
 	public VerifyCustomerSteps() {
 	}
 	

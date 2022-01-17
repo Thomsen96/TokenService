@@ -1,7 +1,5 @@
 package dtu.TokenService.Domain.Interfaces;
 
-import java.util.List;
-import java.util.Collection;
 import java.util.HashSet;
 
 import dtu.TokenService.Domain.Entities.Token;

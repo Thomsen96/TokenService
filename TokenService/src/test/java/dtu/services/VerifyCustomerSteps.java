@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
-import dtu.TokenService.Presentation.Resources.TokenMessageService;
+import dtu.TokenService.Presentation.TokenEventHandler;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,7 +20,7 @@ public class VerifyCustomerSteps {
 	
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
-	private TokenMessageService messageService = new TokenMessageService(messageQueue, tokenService);
+	private TokenEventHandler messageService = new TokenEventHandler(messageQueue, tokenService);
 	private CompletableFuture<Event> customerVerificationResponseComplete = new CompletableFuture<>();
 
 	private Event customerVerificationResponse;
@@ -50,7 +50,7 @@ public class VerifyCustomerSteps {
 	@Then("the {string} event is sent") // If this assert fails, maybe try again you were unlucky.
 	public void theEventIsSent(String sendEventString) throws InterruptedException {
 		Event event = new Event(sendEventString, new Object[] { customerId }); // 	"CustomerVerificationRequested"
-		Thread.sleep(10); // added feature for concurrency
+		Thread.sleep(20); // added feature for concurrency
 		assertEquals(event, messageQueue.getEvent(sendEventString));
 	}
 	

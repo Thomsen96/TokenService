@@ -1,7 +1,6 @@
 package dtu.TokenService.Application;
 
 import java.util.HashSet;
-import java.util.List;
 
 import dtu.TokenService.Domain.Entities.Token;
 import dtu.TokenService.Domain.Interfaces.ITokenRepository;
@@ -42,5 +41,9 @@ public class TokenService {
 	
 	public Token getVerifiedToken(String tokenUuid) {
 		return tokenRepository.getVerfiedToken(tokenUuid);
+	}
+
+	public String getStatus() {
+		return "Token service ready";
 	}
 }

@@ -1,4 +1,4 @@
-package dtu.TokenService.Presentation.Resources;
+package dtu.TokenService.Presentation;
 
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
@@ -6,9 +6,9 @@ import messaging.implementations.RabbitMqQueue;
 
 public class TokenMessageFactory {
   
-  static TokenMessageService service = null;
+  static TokenEventHandler service = null;
 
-	public TokenMessageService getService() {
+	public TokenEventHandler getService() {
 		// The singleton pattern.
 		// Ensure that there is at most
 		// one instance of a PaymentService
@@ -24,11 +24,11 @@ public class TokenMessageFactory {
 		// is called dependency injection.
 		// At the end, we can use the PaymentService in tests
 		// without sending actual messages to RabbitMq.
-		var messageQueue = new RabbitMqQueue("rabbitMq");
+		var messageQueue = new RabbitMqQueue("localhost");
 
 		//TODO: Check how to add busniss logic here.
 		
-		service = new TokenMessageService(messageQueue, new TokenService(new LocalTokenRepository()));
+		service = new TokenEventHandler(messageQueue, new TokenService(new LocalTokenRepository()));
     //new StudentRegistrationServiceAdapter(service, mq);
 		return service;
   }

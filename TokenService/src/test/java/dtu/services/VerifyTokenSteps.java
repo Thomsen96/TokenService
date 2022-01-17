@@ -54,8 +54,9 @@ public class VerifyTokenSteps {
 	}
 	
 	@When("the account verification response event is received")
-	public void theAccountVerificationResponseEventIsReceived() {
+	public void theAccountVerificationResponseEventIsReceived() throws InterruptedException {
 		Event event = new Event("CustomerVerificationResponse." + sessionId,new Object[] { true });
+		Thread.sleep(100);
 		accountAccess.handleCustomerVerificationResponse(event);
 	}
 

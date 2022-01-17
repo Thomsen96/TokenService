@@ -6,13 +6,8 @@ import dtu.TokenService.Presentation.TokenEventHandler;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import messaging.Event;
-import messaging.MessageQueue;
 import messaging.implementations.MockMessageQueue;
 
 public class TokenCreationRequestSteps {
@@ -22,7 +17,6 @@ public class TokenCreationRequestSteps {
 	String sessionId;
 	Token token = null;
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
-//	private MessageQueue messageQueue = mock(MessageQueue.class);
 	private TokenService tokenService = new TokenService(new LocalTokenRepository());
 	private TokenEventHandler messageService = new TokenEventHandler(messageQueue, tokenService);
 
@@ -35,7 +29,6 @@ public class TokenCreationRequestSteps {
 
 	@When("a request to create and receive new tokens is received")
 	public void aRequestToCreateAndReceiveNewTokensIsReceived() {
-//		token = tokenService.createTokens(customerId, numOfTokens).iterator().next();
 		Event incommingEvent = new Event("TokenCreationRequest",new Object[] {customerId, numOfTokens, sessionId});
 		messageService.handleTokenCreationRequest(incommingEvent);
 	}

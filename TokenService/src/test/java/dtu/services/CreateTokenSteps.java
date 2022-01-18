@@ -8,7 +8,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import messaging.Event;
 import messaging.implementations.MockMessageQueue;
 
 import java.util.HashSet;

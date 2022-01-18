@@ -18,6 +18,7 @@ public class TokenEventHandler {
 		//		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
 	}
 
+	// TODO: Change sessionId to arg 0
 	public void handleTokenCreationRequest(Event e) {
 		var customerId = e.getArgument(0, String.class);
 		var numOfTokens = e.getArgument(1, Integer.class);
@@ -26,6 +27,8 @@ public class TokenEventHandler {
 		tokenService.createTokens(customerId, numOfTokens, sessionId);
 	}
 
+
+	// TODO: Change sessionId to arg 0
 	// Handler for verification request from Payments that needs to know if the token is valid and the cid for the token.
 	public void handleTokenVerificationRequest(Event e) {
 		var tokenUuid = e.getArgument(0, String.class);

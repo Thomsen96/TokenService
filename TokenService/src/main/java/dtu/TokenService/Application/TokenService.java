@@ -2,9 +2,9 @@ package dtu.TokenService.Application;
 
 import java.util.HashSet;
 
-import dtu.TokenService.Domain.Entities.Token;
-import dtu.TokenService.Domain.Interfaces.ITokenRepository;
+import dtu.TokenService.Domain.Token;
 import dtu.TokenService.Infrastructure.AccountAccess;
+import dtu.TokenService.Infrastructure.ITokenRepository;
 import messaging.Event;
 import messaging.MessageQueue;
 

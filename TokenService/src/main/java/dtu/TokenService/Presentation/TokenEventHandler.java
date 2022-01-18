@@ -1,9 +1,9 @@
 package dtu.TokenService.Presentation;
 
 import dtu.TokenService.Application.TokenService;
+import dtu.TokenService.Domain.Token;
 import messaging.Event;
 import messaging.MessageQueue;
-import dtu.TokenService.Domain.Entities.Token;
 
 public class TokenEventHandler {
 	private MessageQueue messageQueue;

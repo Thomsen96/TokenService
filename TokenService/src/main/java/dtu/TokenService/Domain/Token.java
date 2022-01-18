@@ -1,4 +1,4 @@
-package dtu.TokenService.Domain.Entities;
+package dtu.TokenService.Domain;
 
 import java.util.UUID;
 

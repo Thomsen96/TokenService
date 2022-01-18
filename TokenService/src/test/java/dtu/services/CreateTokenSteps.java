@@ -1,9 +1,8 @@
 package dtu.services;
 import dtu.TokenService.Application.TokenService;
-import dtu.TokenService.Domain.Entities.Token;
-import dtu.TokenService.Domain.Repositories.LocalTokenRepository;
+import dtu.TokenService.Domain.Token;
 import dtu.TokenService.Infrastructure.AccountAccess;
-
+import dtu.TokenService.Infrastructure.LocalTokenRepository;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

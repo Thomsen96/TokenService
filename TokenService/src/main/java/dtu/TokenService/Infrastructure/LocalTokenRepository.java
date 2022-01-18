@@ -1,12 +1,11 @@
-package dtu.TokenService.Domain.Repositories;
-
-import dtu.TokenService.Domain.Entities.Token;
-import dtu.TokenService.Domain.Interfaces.ITokenRepository;
+package dtu.TokenService.Infrastructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import dtu.TokenService.Domain.Token;
 
 public class LocalTokenRepository implements ITokenRepository {
 

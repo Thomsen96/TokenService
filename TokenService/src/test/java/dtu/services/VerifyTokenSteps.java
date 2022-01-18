@@ -49,7 +49,7 @@ public class VerifyTokenSteps {
 	@When("the account verification response event is received")
 	public void theAccountVerificationResponseEventIsReceived() throws InterruptedException {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
-		Event event = new Event("CustomerVerificationResponse." + sessionId,new Object[] { eventResponse });
+		Event event = new Event("CustomerVerificationResponse." + sessionId, eventResponse );
 		Thread.sleep(100);
 		accountAccess.handleCustomerVerificationResponse(event);
 	}
@@ -58,13 +58,16 @@ public class VerifyTokenSteps {
 	public void aRequestToVerifyTheTokenIsReceived() {
 //		token = tokenService.createTokens(customerId, 1, sessionId).stream().findFirst().get();
 		token = tokenCreation.join().iterator().next();
-		tokenEventHandler.handleTokenVerificationRequest(new Event("TokenVerificationRequested",new Object[] {token.getUuid(), sessionId }));
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, token.getUuid());
+		Event incommingEvent = new Event("TokenVerificationRequested", eventResponse);
+		tokenEventHandler.handleTokenVerificationRequest(incommingEvent);
 	}
 
 	
 	@Then("the token is verified")
 	public void theTokenIsVerified() {
-		Event event = new Event("TokenVerificationResponse." + sessionId, new Object[] { token });
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, token);
+		Event event = new Event("TokenVerificationResponse." + sessionId, eventResponse);
 		assertEquals(event, messageQueue.getEvent("TokenVerificationResponse." + sessionId));
 	}
 

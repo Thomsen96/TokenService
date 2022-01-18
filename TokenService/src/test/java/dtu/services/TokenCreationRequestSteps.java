@@ -49,10 +49,10 @@ public class TokenCreationRequestSteps {
 	@Then("the customer verification request is sent")
 	public void theCustomerVerificationRequestIsSent() throws InterruptedException {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
-		Event event = new Event("CustomerVerificationRequest", eventResponse); 
+		Event expectedVerificationRequestEvent = new Event("CustomerVerificationRequest", eventResponse); 
 		Thread.sleep(100);
-		Event customerVerificationRequest = messageQueue.getEvent("CustomerVerificationRequest");
-		assertEquals(event, customerVerificationRequest);
+		Event actualVerificationRequestEvent = messageQueue.getEvent("CustomerVerificationRequest");
+		assertEquals(expectedVerificationRequestEvent, actualVerificationRequestEvent);
 	}
 
 	@When("the verification response event is received")

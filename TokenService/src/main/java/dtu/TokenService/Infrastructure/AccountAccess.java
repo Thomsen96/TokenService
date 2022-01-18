@@ -18,7 +18,7 @@ public class AccountAccess {
 	public Event customerVerificationRequest(String customerId, String sessionId) {
 		customerVerified = new CompletableFuture<Event>();
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
-		Event outgoingEvent = new Event("CustomerVerificationRequest" + sessionId, new Object[] {eventResponse});
+		Event outgoingEvent = new Event("CustomerVerificationRequest", eventResponse);
 		
 		messageQueue.addHandler("CustomerVerificationResponse." + sessionId, this::handleCustomerVerificationResponse);
 		messageQueue.publish(outgoingEvent);

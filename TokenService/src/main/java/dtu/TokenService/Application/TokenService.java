@@ -42,7 +42,7 @@ public class TokenService {
 		return tokenRepository.get(customerId);
 	}
 
-	private Event generateTokens(String customerId, Integer numOfTokens, String sessionId) {
+	public Event generateTokens(String customerId, Integer numOfTokens, String sessionId) {
 		Event responseEvent;
 		if(numOfTokens > 0 && numOfTokens < 6 && tokenRepository.get(customerId).size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {

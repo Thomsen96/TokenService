@@ -8,6 +8,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import messaging.Event;
+import messaging.EventResponse;
 import messaging.implementations.MockMessageQueue;
 
 public class VerifyCustomerSteps {
@@ -31,9 +32,6 @@ public class VerifyCustomerSteps {
 
 	@When("the customer is being verified") // "When customer customerVerificationRequest is sent"
 	public void theCustomerIsBeingVerified() {
-		// We have to run the verification in a thread, because
-		// the register method will only finish after the next @When
-		// step is executed.
 		new Thread(() -> {
 			customerVerificationResponse = accountAccess.customerVerificationRequest(customerId, sessionId);
 			customerVerificationResponseComplete.complete(customerVerificationResponse);
@@ -42,21 +40,23 @@ public class VerifyCustomerSteps {
 
 	@Then("the verification request event is sent") // If this assert fails, maybe try again you were unlucky.
 	public void theVerificationEventIsSent() throws InterruptedException {
-		Event event = new Event("CustomerVerificationRequest", new Object[] { customerId, sessionId }); // 	"CustomerVerificationRequested"
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
+		Event event = new Event("CustomerVerificationRequest", eventResponse); 
 		Thread.sleep(20); // added feature for concurrency
 		assertEquals(event, messageQueue.getEvent("CustomerVerificationRequest"));
 	}
 	
 	@When("the verification response event is sent with customerId") // "when the CustomerVerificationResponse is received"
 	public void theVerificationEventIsSentWithCustomerId() {
-		// This step simulate the event created by a downstream service.'
-		boolean returnVal = true;					// "CustomerVerified"
-		Event responseEvent = new Event("CustomerVerificationResponse",new Object[] {returnVal});
+		// This step simulate the event created by the account service.'
+		EventResponse eventResponse = new EventResponse(sessionId, true, null);
+		Event responseEvent = new Event("CustomerVerificationResponse", eventResponse);
 		accountAccess.handleCustomerVerificationResponse(responseEvent);
 	}
 
 	@Then("the customer is verified")
 	public void theCustomerIsVerified() {
-		assertTrue(customerVerificationResponseComplete.join().getArgument(0, boolean.class));
+		EventResponse eventResponse = customerVerificationResponseComplete.join().getArgument(0, EventResponse.class);
+		assertTrue(eventResponse.isSuccess());
 	}
 }

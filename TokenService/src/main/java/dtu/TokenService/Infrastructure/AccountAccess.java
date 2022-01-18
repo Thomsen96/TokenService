@@ -3,6 +3,7 @@ package dtu.TokenService.Infrastructure;
 import java.util.concurrent.CompletableFuture;
 
 import messaging.Event;
+import messaging.EventResponse;
 import messaging.MessageQueue;
 
 public class AccountAccess {
@@ -16,15 +17,19 @@ public class AccountAccess {
 
 	public Event customerVerificationRequest(String customerId, String sessionId) {
 		customerVerified = new CompletableFuture<Event>();
-		Event event = new Event("CustomerVerificationRequest", new Object[] { customerId, sessionId }); 
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
+		Event outgoingEvent = new Event("CustomerVerificationRequest" + sessionId, new Object[] {eventResponse});
+		
 		messageQueue.addHandler("CustomerVerificationResponse." + sessionId, this::handleCustomerVerificationResponse);
-		messageQueue.publish(event);
+		messageQueue.publish(outgoingEvent);
 
 		(new Thread() {
 			public void run() {
 				try {
 					Thread.sleep(5000);
-					customerVerified.complete(new Event("", new Object[] { "No response from AccountService" }));
+					EventResponse eventResponse = new EventResponse(sessionId, false, "No response from AccountService");
+					Event value = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
+					customerVerified.complete(value);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

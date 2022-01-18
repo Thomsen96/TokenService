@@ -3,6 +3,7 @@ package dtu.TokenService.Presentation;
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Domain.Token;
 import messaging.Event;
+import messaging.EventResponse;
 import messaging.MessageQueue;
 
 public class TokenEventHandler {
@@ -19,10 +20,11 @@ public class TokenEventHandler {
 	}
 
 	// TODO: Change sessionId to arg 0
-	public void handleTokenCreationRequest(Event e) {
-		var customerId = e.getArgument(0, String.class);
-		var numOfTokens = e.getArgument(1, Integer.class);
-		var sessionId = e.getArgument(2, String.class);
+	public void handleTokenCreationRequest(Event incommingEvent) {
+		EventResponse eventArguments = incommingEvent.getArgument(0, EventResponse.class);
+		var sessionId = eventArguments.getSessionId();
+		var customerId = eventArguments.getArgument(0, String.class);
+		var numOfTokens = eventArguments.getArgument(1, Integer.class);
 		
 		tokenService.createTokens(customerId, numOfTokens, sessionId);
 	}
@@ -30,15 +32,16 @@ public class TokenEventHandler {
 
 	// TODO: Change sessionId to arg 0
 	// Handler for verification request from Payments that needs to know if the token is valid and the cid for the token.
-	public void handleTokenVerificationRequest(Event e) {
-		var tokenUuid = e.getArgument(0, String.class);
-		var sessionId = e.getArgument(1, String.class);
-		Token tokenObj = tokenService.getVerifiedToken(tokenUuid);
-		Event event = new Event("TokenVerificationResponse." + sessionId, new Object[] { tokenObj });
+	public void handleTokenVerificationRequest(Event incommingEvent) {
+		EventResponse eventArguments = incommingEvent.getArgument(0, EventResponse.class);
+		var sessionId = eventArguments.getSessionId();
+		var tokenUuid = eventArguments.getArgument(0, String.class);
+		EventResponse eventResponse = tokenService.getVerifiedTokenResponse(sessionId, tokenUuid);
+		Event event = new Event("TokenVerificationResponse." + sessionId, eventResponse);
 		messageQueue.publish(event);
 	}
 
 	public void handleTokenStatusRequest(Event e) {
-		tokenService.getStatus(e.getArgument(0, String.class));
+		tokenService.getStatus(e.getArgument(0, EventResponse.class).getArgument(0, String.class));
 	}
 }

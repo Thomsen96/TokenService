@@ -28,7 +28,7 @@ public class Token {
 		return tokenUuid;
 	}
 
-	public Boolean getValidToken() {
+	public Boolean getTokenValidity() {
 		return tokenValidity;
 	}
 

@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.concurrent.CompletableFuture;
 
 import messaging.Event;
+import messaging.EventResponse;
 import messaging.implementations.MockMessageQueue;
 
 public class TokenCreationRequestSteps {
@@ -36,7 +37,8 @@ public class TokenCreationRequestSteps {
 
 	@When("a request to create and receive new tokens is received")
 	public void aRequestToCreateAndReceiveNewTokensIsReceived() {
-		Event incommingEvent = new Event("TokenCreationRequest", new Object[] {customerId, numOfTokens, sessionId});
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId, numOfTokens);
+		Event incommingEvent = new Event("TokenCreationRequest", eventResponse);
 
 		new Thread(() -> {
 			tokenEventHandler.handleTokenCreationRequest(incommingEvent);
@@ -46,7 +48,8 @@ public class TokenCreationRequestSteps {
 
 	@Then("the customer verification request is sent")
 	public void theCustomerVerificationRequestIsSent() throws InterruptedException {
-		Event event = new Event("CustomerVerificationRequest", new Object[] { customerId , sessionId}); 
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
+		Event event = new Event("CustomerVerificationRequest", eventResponse); 
 		Thread.sleep(100);
 		Event customerVerificationRequest = messageQueue.getEvent("CustomerVerificationRequest");
 		assertEquals(event, customerVerificationRequest);
@@ -54,15 +57,17 @@ public class TokenCreationRequestSteps {
 
 	@When("the verification response event is received")
 	public void theVerificationResponseEventIsReceived() {
-		Event event = new Event("CustomerVerificationResponse." + sessionId,new Object[] { true });
+		EventResponse eventResponse = new EventResponse(sessionId, true, null);
+		Event event = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
 		accountAccess.handleCustomerVerificationResponse(event);
 	}
 
 	@Then("the token creation response is sent")
 	public void theTokenCreationResponseIsSent() {
 		tokenCreationProcess.join();
-		Event responseEvent = new Event("TokenCreationResponse." + sessionId, new Object[] { tokenService.getTokens(customerId) });
-		assertEquals(responseEvent, messageQueue.getEvent("TokenCreationResponse." + sessionId));
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokens(customerId));
+		Event expectedCreationResponseEvent = new Event("TokenCreationResponse." + sessionId, eventResponse);
+		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent("TokenCreationResponse." + sessionId));
 	}
 
 

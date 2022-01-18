@@ -28,12 +28,12 @@ public class CreateTokenSteps {
 	
 		@Given("the customer already has {int} tokens")
 		public void theCustomerAlreadyHasTokens(Integer numOfTokens) {
-			tokenService.generateTokens(customerId, numOfTokens, sessionId);
+			tokenService.generateTokenEventResponse(sessionId, customerId, numOfTokens);
 		}
 	
 		@When("the customer requests {int} tokens")
 		public void theCustomerRequestsTokens(Integer numOfTokens) {
-			tokenService.generateTokens(customerId, numOfTokens, sessionId);
+			tokenService.generateTokenEventResponse(sessionId, customerId, numOfTokens);
 			tokens = tokenService.getTokens(customerId);
 		}
 	

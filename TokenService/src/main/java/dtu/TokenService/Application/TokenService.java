@@ -6,6 +6,7 @@ import dtu.TokenService.Domain.Token;
 import dtu.TokenService.Infrastructure.AccountAccess;
 import dtu.TokenService.Infrastructure.ITokenRepository;
 import messaging.Event;
+import messaging.EventResponse;
 import messaging.MessageQueue;
 
 public class TokenService {
@@ -22,31 +23,31 @@ public class TokenService {
 	}
 
 	public HashSet<Token> createTokens(String customerId, Integer numOfTokens, String sessionId) {
-		
 		Event event = accountAccess.customerVerificationRequest(customerId, sessionId);
-		Event responseEvent;
-		if(event.getArgument(0, boolean.class)) {
-			responseEvent = generateTokens(customerId, numOfTokens, sessionId);
+		EventResponse eventResponse;
+		if(event.getArgument(0, EventResponse.class).isSuccess()) {
+			eventResponse = generateTokenEventResponse(sessionId, customerId, numOfTokens);
 		}
 		else {
-			responseEvent = new Event("TokenCreationResponse." + sessionId, new Object[] { "Token creation failed. Either the customerId is not in our system, or you requested the wrong amount, or you have too many tokens already." });
+			eventResponse = new EventResponse(sessionId, false, "Token creation failed: Customer ID is not in our system");
 		}
-		messageQueue.publish(responseEvent);
+		Event creationResponseEvent = new Event("TokenCreationResponse." + sessionId, eventResponse);
+		messageQueue.publish(creationResponseEvent);
 		return tokenRepository.get(customerId);
 	}
 
-	public Event generateTokens(String customerId, Integer numOfTokens, String sessionId) {
-		Event responseEvent;
+	public EventResponse generateTokenEventResponse(String sessionId, String customerId, Integer numOfTokens) {
+		EventResponse eventResponse;
 		if(numOfTokens > 0 && numOfTokens < 6 && tokenRepository.get(customerId).size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {
 				tokenRepository.create(customerId);
 			}
-			responseEvent = new Event("TokenCreationResponse." + sessionId, new Object[] { tokenRepository.get(customerId) });
+			eventResponse = new EventResponse(sessionId, true, null, tokenRepository.get(customerId));
 		}
 		else {
-			responseEvent = new Event("TokenCreationResponse." + sessionId, new Object[] { "Invalid token request" });
+			eventResponse = new EventResponse(sessionId, false, "Invalid token request: You either have 2 or more tokens already, or you requested an invalid amount");
 		}
-		return responseEvent;
+		return eventResponse;
 	}
 
 	public HashSet<Token> getTokens(String customerId) {
@@ -57,12 +58,30 @@ public class TokenService {
 		return tokenRepository.delete(customerId);
 	}
 	
+	public EventResponse getVerifiedTokenResponse(String sessionId, String tokenUuid) {
+		Token verfiedToken = tokenRepository.getVerfiedToken(tokenUuid);
+		EventResponse eventResponse;
+		if(verfiedToken.getTokenValidity()) {
+			eventResponse = new EventResponse(sessionId, true, null, verfiedToken);
+		}
+		else {
+			eventResponse = new EventResponse(sessionId, false, "The requested token is not valid");
+		}
+		return eventResponse;
+	}
+	
 	public Token getVerifiedToken(String tokenUuid) {
 		return tokenRepository.getVerfiedToken(tokenUuid);
 	}
 
 	public void getStatus(String sessionId) {
-		Event event = new Event("TokenStatusResponse." + sessionId, new Object[] {"Token service ready"});
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, "Token service ready");
+		Event event = new Event("TokenStatusResponse." + sessionId, eventResponse);
 		messageQueue.publish(event);
 	}
+	
+//	public void getStatus(String sessionId) {
+//		Event event = new Event("TokenStatusResponse." + sessionId, new Object[] {"Token service ready"});
+//		messageQueue.publish(event);
+//	}
 }

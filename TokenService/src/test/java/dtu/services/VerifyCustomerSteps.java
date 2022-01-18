@@ -35,7 +35,7 @@ public class VerifyCustomerSteps {
 		// the register method will only finish after the next @When
 		// step is executed.
 		new Thread(() -> {
-			customerVerificationResponse = accountAccess.verifyCustomerId(customerId, sessionId);
+			customerVerificationResponse = accountAccess.customerVerificationRequest(customerId, sessionId);
 			customerVerificationResponseComplete.complete(customerVerificationResponse);
 		}).start();
 	}

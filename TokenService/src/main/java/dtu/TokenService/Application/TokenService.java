@@ -30,7 +30,7 @@ public class TokenService {
 
 	public HashSet<Token> createTokens(String customerId, Integer numOfTokens, String sessionId) {
 		
-		Event event = accountAccess.verifyCustomerId(customerId, sessionId);
+		Event event = accountAccess.customerVerificationRequest(customerId, sessionId);
 		Event responseEvent;
 		if(event.getArgument(0, boolean.class)) {
 			responseEvent = generateTokens(customerId, numOfTokens, sessionId);

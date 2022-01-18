@@ -68,8 +68,8 @@ public class TokenService {
 		return tokenRepository.getVerfiedToken(tokenUuid);
 	}
 
-	public void getStatus() {
-		Event event = new Event("TokenStatusResponse", new Object[] {"Token service ready"});
+	public void getStatus(String sessionId) {
+		Event event = new Event("TokenStatusResponse." + sessionId, new Object[] {"Token service ready"});
 		messageQueue.publish(event);
 	}
 }

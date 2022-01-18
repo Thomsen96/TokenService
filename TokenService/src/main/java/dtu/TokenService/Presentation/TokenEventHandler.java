@@ -36,6 +36,6 @@ public class TokenEventHandler {
 	}
 
 	public void handleTokenStatusRequest(Event e) {
-		tokenService.getStatus();
+		tokenService.getStatus(e.getArgument(0, String.class));
 	}
 }

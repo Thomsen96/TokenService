@@ -21,21 +21,13 @@ public class AccountAccess {
 		messageQueue.publish(event);
 
 		(new Thread() {
-
 			public void run() {
-
 				try {
-
 					Thread.sleep(5000);
-
 					customerVerified.complete(new Event("", new Object[] { "No response from AccountService" }));
-
 				} catch (InterruptedException e) {
-
 					e.printStackTrace();
-
 				}
-
 			}
 		}).start();
 		return customerVerified.join();

@@ -20,13 +20,6 @@ public class TokenService {
 		this.tokenRepository = tokenRepository;
 		this.accountAccess = accountAccess;
 	}
-	
-	public Token createAndReturnSingleToken(String customerId, Integer numOfTokens) {
-		if(numOfTokens > 0 && numOfTokens < 6 && tokenRepository.get(customerId).size() < 2) {
-			tokenRepository.create(customerId);
-		}
-		return tokenRepository.get(customerId).iterator().next();
-	}
 
 	public HashSet<Token> createTokens(String customerId, Integer numOfTokens, String sessionId) {
 		

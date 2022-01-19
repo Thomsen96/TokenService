@@ -50,13 +50,15 @@ public class VerifyCustomerSteps {
 	public void theVerificationEventIsSentWithCustomerId() {
 		// This step simulate the event created by the account service.'
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
-		Event responseEvent = new Event("CustomerVerificationResponse", eventResponse);
+		Event responseEvent = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
 		accountAccess.handleCustomerVerificationResponse(responseEvent);
 	}
 
 	@Then("the customer is verified")
 	public void theCustomerIsVerified() {
-		EventResponse eventResponse = customerVerificationResponseComplete.join().getArgument(0, EventResponse.class);
-		assertTrue(eventResponse.isSuccess());
+		EventResponse eventResponse = new EventResponse(sessionId, true, null);
+		Event expectedEvent = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
+		Event actualEvent = customerVerificationResponseComplete.join();
+		assertEquals(expectedEvent, actualEvent);
 	}
 }

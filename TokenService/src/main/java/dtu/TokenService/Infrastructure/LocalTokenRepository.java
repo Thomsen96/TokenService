@@ -2,7 +2,6 @@ package dtu.TokenService.Infrastructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import dtu.TokenService.Domain.Token;
@@ -11,13 +10,13 @@ public class LocalTokenRepository implements ITokenRepository {
 
 	List<Token> tokens = new ArrayList<>();
 	HashMap<String, Token> tokenHashMap = new HashMap<>();
-	HashMap<String, HashSet<Token>> customerHashMap = new HashMap<>();
+	HashMap<String, ArrayList<Token>> customerHashMap = new HashMap<>();
 
 
 	@Override
-	public HashSet<Token> get(String customerId) {
+	public ArrayList<Token> get(String customerId) {
 		if(!customerHashMap.containsKey(customerId)) {
-			customerHashMap.put(customerId, new HashSet<Token>());
+			customerHashMap.put(customerId, new ArrayList<Token>());
 		}
 		return customerHashMap.get(customerId);
 	}
@@ -30,7 +29,7 @@ public class LocalTokenRepository implements ITokenRepository {
 			customerHashMap.get(customerId).add(token);
 		}
 		else {
-			var tokenSet = new HashSet<Token>();
+			var tokenSet = new ArrayList<Token>();
 			tokenSet.add(token);
 			customerHashMap.put(customerId, tokenSet);
 		}
@@ -55,9 +54,5 @@ public class LocalTokenRepository implements ITokenRepository {
 		} catch (Exception e) {
 			return new Token(false);
 		}
-	}
-	@Override
-	public HashSet<Token> getAll() {
-		return null;
 	}
 }

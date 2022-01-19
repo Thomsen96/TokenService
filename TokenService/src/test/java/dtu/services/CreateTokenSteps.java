@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import messaging.implementations.MockMessageQueue;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 public class CreateTokenSteps {
 		String customerId = null;
 		String merchantId = null;
@@ -18,7 +18,7 @@ public class CreateTokenSteps {
 		private static MockMessageQueue messageQueue = new MockMessageQueue();
 		private static AccountAccess accountAccess = new AccountAccess(messageQueue);
 		private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
-		HashSet<Token> tokens = new HashSet<>();
+		ArrayList<Token> tokens = new ArrayList<>();
 	
 		@Given("a customer with id {string}")
 		public void aCustomerWithId(String customerId) {

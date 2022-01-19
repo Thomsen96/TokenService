@@ -12,7 +12,7 @@ import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 import messaging.Event;
@@ -28,7 +28,7 @@ public class VerifyTokenSteps {
 	private static AccountAccess accountAccess = new AccountAccess(messageQueue);
 	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
 	private TokenEventHandler tokenEventHandler = new TokenEventHandler(messageQueue, tokenService);
-	private CompletableFuture<HashSet<Token>> tokenCreation = new CompletableFuture<>();
+	private CompletableFuture<ArrayList<Token>> tokenCreation = new CompletableFuture<>();
 	
 	@Given("A customer with id {string}")
 	public void aCustomerWithId(String customerId) {

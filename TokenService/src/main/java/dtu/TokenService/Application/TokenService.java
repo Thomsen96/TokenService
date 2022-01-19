@@ -1,7 +1,6 @@
 package dtu.TokenService.Application;
 
-import java.util.HashSet;
-
+import java.util.ArrayList;
 import dtu.TokenService.Domain.Token;
 import dtu.TokenService.Infrastructure.AccountAccess;
 import dtu.TokenService.Infrastructure.ITokenRepository;
@@ -22,7 +21,7 @@ public class TokenService {
 		this.accountAccess = accountAccess;
 	}
 
-	public HashSet<Token> createTokens(String customerId, Integer numOfTokens, String sessionId) {
+	public ArrayList<Token> createTokens(String customerId, Integer numOfTokens, String sessionId) {
 		Event event = accountAccess.customerVerificationRequest(customerId, sessionId);
 		EventResponse eventResponse;
 		if(event.getArgument(0, EventResponse.class).isSuccess()) {
@@ -50,7 +49,7 @@ public class TokenService {
 		return eventResponse;
 	}
 
-	public HashSet<Token> getTokens(String customerId) {
+	public ArrayList<Token> getTokens(String customerId) {
 		return tokenRepository.get(customerId);
 	}
 

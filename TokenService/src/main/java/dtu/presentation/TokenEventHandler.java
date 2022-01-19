@@ -41,6 +41,7 @@ public class TokenEventHandler {
 	}
 
 	public void handleTokenStatusRequest(Event e) {
-		tokenService.getStatus(e.getArgument(0, EventResponse.class).getArgument(0, String.class));
+		tokenService.getStatus(e.getArgument(0, EventResponse.class).getSessionId());
+		
 	}
 }

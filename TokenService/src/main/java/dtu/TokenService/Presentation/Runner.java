@@ -3,7 +3,6 @@ package dtu.TokenService.Presentation;
 import dtu.TokenService.Application.TokenService;
 import dtu.TokenService.Infrastructure.AccountAccess;
 import dtu.TokenService.Infrastructure.LocalTokenRepository;
-import dtu.TokenService.Infrastructure.MessageQueueFactory;
 import messaging.MessageQueue;
 
 public class Runner {

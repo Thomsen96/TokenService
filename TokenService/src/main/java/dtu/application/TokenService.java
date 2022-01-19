@@ -78,9 +78,5 @@ public class TokenService {
 		Event event = new Event("TokenStatusResponse." + sessionId, eventResponse);
 		messageQueue.publish(event);
 	}
-	
-//	public void getStatus(String sessionId) {
-//		Event event = new Event("TokenStatusResponse." + sessionId, new Object[] {"Token service ready"});
-//		messageQueue.publish(event);
-//	}
+
 }

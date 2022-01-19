@@ -50,7 +50,7 @@ public class TokenCreationRequestSteps {
 	public void theCustomerVerificationRequestIsSent() throws InterruptedException {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
 		Event expectedVerificationRequestEvent = new Event("CustomerVerificationRequest", eventResponse); 
-		Thread.sleep(100);
+		Thread.sleep(200);
 		Event actualVerificationRequestEvent = messageQueue.getEvent("CustomerVerificationRequest");
 		assertEquals(expectedVerificationRequestEvent, actualVerificationRequestEvent);
 	}

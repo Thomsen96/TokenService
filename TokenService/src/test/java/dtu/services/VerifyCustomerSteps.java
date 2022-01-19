@@ -3,7 +3,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CompletableFuture;
 
-import dtu.TokenService.Infrastructure.AccountAccess;
+import dtu.infrastructure.AccountAccess;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

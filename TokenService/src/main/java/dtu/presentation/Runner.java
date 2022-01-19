@@ -1,8 +1,8 @@
-package dtu.TokenService.Presentation;
+package dtu.presentation;
 
-import dtu.TokenService.Application.TokenService;
-import dtu.TokenService.Infrastructure.AccountAccess;
-import dtu.TokenService.Infrastructure.LocalTokenRepository;
+import dtu.application.TokenService;
+import dtu.infrastructure.AccountAccess;
+import dtu.infrastructure.LocalTokenRepository;
 import messaging.MessageQueue;
 
 public class Runner {

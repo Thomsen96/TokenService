@@ -1,7 +1,6 @@
-package dtu.TokenService.Presentation;
+package dtu.presentation;
 
-import dtu.TokenService.Application.TokenService;
-import dtu.TokenService.Domain.Token;
+import dtu.application.TokenService;
 import messaging.Event;
 import messaging.EventResponse;
 import messaging.MessageQueue;

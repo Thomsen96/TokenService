@@ -1,4 +1,4 @@
-package dtu.TokenService.Presentation;
+package dtu.presentation;
 
 import messaging.MessageQueue;
 import messaging.implementations.RabbitMqQueue;

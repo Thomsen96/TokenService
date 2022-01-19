@@ -1,4 +1,4 @@
-package dtu.TokenService.Domain;
+package dtu.domain;
 
 import java.util.UUID;
 

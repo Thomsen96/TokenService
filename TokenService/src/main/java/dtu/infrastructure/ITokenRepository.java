@@ -1,9 +1,8 @@
-package dtu.TokenService.Infrastructure;
+package dtu.infrastructure;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
-import dtu.TokenService.Domain.Token;
+import dtu.domain.Token;
 
 
 public interface ITokenRepository {

@@ -1,9 +1,9 @@
-package dtu.TokenService.Application;
+package dtu.application;
 
 import java.util.ArrayList;
-import dtu.TokenService.Domain.Token;
-import dtu.TokenService.Infrastructure.AccountAccess;
-import dtu.TokenService.Infrastructure.ITokenRepository;
+import dtu.domain.Token;
+import dtu.infrastructure.AccountAccess;
+import dtu.infrastructure.ITokenRepository;
 import messaging.Event;
 import messaging.EventResponse;
 import messaging.MessageQueue;

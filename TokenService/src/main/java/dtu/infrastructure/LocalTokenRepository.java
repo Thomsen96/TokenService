@@ -1,10 +1,10 @@
-package dtu.TokenService.Infrastructure;
+package dtu.infrastructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import dtu.TokenService.Domain.Token;
+import dtu.domain.Token;
 
 public class LocalTokenRepository implements ITokenRepository {
 

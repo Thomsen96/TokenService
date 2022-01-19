@@ -1,4 +1,4 @@
-package dtu.TokenService.Infrastructure;
+package dtu.infrastructure;
 
 import java.util.concurrent.CompletableFuture;
 

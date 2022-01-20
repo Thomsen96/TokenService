@@ -34,7 +34,7 @@ public class CreateTokenSteps {
 		@When("the customer requests {int} tokens")
 		public void theCustomerRequestsTokens(Integer numOfTokens) {
 			tokenService.generateTokenEventResponse(sessionId, customerId, numOfTokens);
-			tokens = tokenService.getTokens(customerId);
+			tokens = tokenService.getTokens(customerId).toArray(new String[] {});;
 		}
 	
 		@Then("the customer has {int} tokens")

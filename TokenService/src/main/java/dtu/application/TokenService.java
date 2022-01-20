@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import dtu.domain.Token;
+import dtu.domain.TokenDTO;
 import dtu.infrastructure.AccountAccess;
 import dtu.infrastructure.ITokenRepository;
 import messaging.Event;
@@ -49,9 +50,12 @@ public class TokenService {
 			for( int i = 0; i < numOfTokens; i++) {
 				tokenRepository.create(customerId);
 			}
-			String tokensAsJson = getTokensJson(customerId);
+
+
+			TokenDTO tokens = new TokenDTO(getTokens(customerId));
+			//String tokensAsJson = getTokensJson(customerId);
 			
-			eventResponse = new EventResponse(sessionId, true, null, tokensAsJson);
+			eventResponse = new EventResponse(sessionId, true, null, tokens);
 		}
 		else {
 			eventResponse = new EventResponse(sessionId, false, "Invalid token request: You either have 2 or more tokens already, or you requested an invalid amount");
@@ -69,11 +73,11 @@ public class TokenService {
 		return tokensAsJson;
 	}
 
-	public String[] getTokens(String customerId) {
+	public List<String> getTokens(String customerId) {
 		//		return tokenRepository.get(customerId);
 		ArrayList<Token> tokenList = tokenRepository.get(customerId);
 		List<String> tokenIdList = tokenList.stream().map(token -> token.getUuid()).collect(Collectors.toList());
-		return tokenIdList.toArray(new String[] {});
+		return tokenIdList;
 	}
 
 	public boolean deleteTokensForCustomer(String customerId) {

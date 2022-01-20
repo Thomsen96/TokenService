@@ -1,6 +1,7 @@
 package dtu.services;
 import dtu.application.TokenService;
 import dtu.domain.Token;
+import dtu.domain.TokenDTO;
 import dtu.infrastructure.AccountAccess;
 import dtu.infrastructure.LocalTokenRepository;
 import dtu.presentation.TokenEventHandler;
@@ -65,7 +66,8 @@ public class TokenCreationRequestSteps {
 	@Then("the token creation response is sent")
 	public void theTokenCreationResponseIsSent() {
 		tokenCreationProcess.join();
-		EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokensJson(customerId));
+		//EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokensJson(customerId));
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, new TokenDTO(tokenService.getTokens(customerId)));
 		Event expectedCreationResponseEvent = new Event("TokenCreationResponse." + sessionId, eventResponse);
 		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent("TokenCreationResponse." + sessionId));
 	}

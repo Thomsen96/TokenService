@@ -18,7 +18,7 @@ public class CreateTokenSteps {
 		private static MockMessageQueue messageQueue = new MockMessageQueue();
 		private static AccountAccess accountAccess = new AccountAccess(messageQueue);
 		private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
-		ArrayList<Token> tokens = new ArrayList<>();
+		String[] tokens;
 	
 		@Given("a customer with id {string}")
 		public void aCustomerWithId(String customerId) {
@@ -39,6 +39,6 @@ public class CreateTokenSteps {
 	
 		@Then("the customer has {int} tokens")
 		public void theCustomerHasTokens(Integer expectedNumOfTokens) {
-			assertEquals(expectedNumOfTokens, tokens.size());
+			assertEquals(expectedNumOfTokens, tokens.length);
 		}
 }

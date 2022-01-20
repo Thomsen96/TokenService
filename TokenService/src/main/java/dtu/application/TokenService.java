@@ -1,6 +1,9 @@
 package dtu.application;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import dtu.domain.Token;
 import dtu.infrastructure.AccountAccess;
 import dtu.infrastructure.ITokenRepository;
@@ -37,11 +40,15 @@ public class TokenService {
 
 	public EventResponse generateTokenEventResponse(String sessionId, String customerId, Integer numOfTokens) {
 		EventResponse eventResponse;
-		if(numOfTokens > 0 && numOfTokens < 6 && tokenRepository.get(customerId).size() < 2) {
+		ArrayList<Token> tokenList = tokenRepository.get(customerId);
+		if(numOfTokens > 0 && numOfTokens < 6 && tokenList.size() < 2) {
 			for( int i = 0; i < numOfTokens; i++) {
 				tokenRepository.create(customerId);
 			}
-			eventResponse = new EventResponse(sessionId, true, null, tokenRepository.get(customerId));
+			tokenList = tokenRepository.get(customerId);
+			List<String> tokenIdList = tokenList.stream().map(token -> token.getUuid()).collect(Collectors.toList());
+			String[] tokenIdArray = tokenIdList.toArray(new String[] {});
+			eventResponse = new EventResponse(sessionId, true, null, tokenIdArray);
 		}
 		else {
 			eventResponse = new EventResponse(sessionId, false, "Invalid token request: You either have 2 or more tokens already, or you requested an invalid amount");
@@ -49,8 +56,11 @@ public class TokenService {
 		return eventResponse;
 	}
 
-	public ArrayList<Token> getTokens(String customerId) {
-		return tokenRepository.get(customerId);
+	public String[] getTokens(String customerId) {
+//		return tokenRepository.get(customerId);
+		ArrayList<Token> tokenList = tokenRepository.get(customerId);
+		List<String> tokenIdList = tokenList.stream().map(token -> token.getUuid()).collect(Collectors.toList());
+		return tokenIdList.toArray(new String[] {});
 	}
 
 	public boolean deleteTokensForCustomer(String customerId) {

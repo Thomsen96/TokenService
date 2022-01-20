@@ -23,17 +23,16 @@ public class AccountAccess {
 		messageQueue.addHandler("CustomerVerificationResponse." + sessionId, this::handleCustomerVerificationResponse);
 		messageQueue.publish(outgoingEvent);
 
-		(new Thread() {
-			public void run() {
-				try {
-					Thread.sleep(5000);
-					EventResponse eventResponse = new EventResponse(sessionId, false, "No response from AccountService");
-					Event value = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
-					customerVerified.complete(value);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+        new Thread(() -> {
+        	try {
+        		Thread.sleep(5000);
+        		EventResponse eventResponseThread = new EventResponse(sessionId, false, "No response from AccountService");
+        		Event value = new Event("CustomerVerificationResponse." + sessionId, eventResponseThread);
+        		customerVerified.complete(value);
+        	} catch (InterruptedException e) {
+        		e.printStackTrace();
+        	}
+			
 		}).start();
 		return customerVerified.join();
 	}

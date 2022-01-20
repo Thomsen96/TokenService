@@ -3,7 +3,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CompletableFuture;
 
+import dtu.application.TokenService;
 import dtu.infrastructure.AccountAccess;
+import dtu.infrastructure.LocalTokenRepository;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,7 +19,7 @@ public class VerifyCustomerSteps {
 	String sessionId;
 	
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
-	private static AccountAccess accountAccess = new AccountAccess(messageQueue);
+	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository());
 	private Event customerVerificationResponse;
 	private CompletableFuture<Event> customerVerificationResponseComplete = new CompletableFuture<>();
 
@@ -33,7 +35,7 @@ public class VerifyCustomerSteps {
 	@When("the customer is being verified") // "When customer customerVerificationRequest is sent"
 	public void theCustomerIsBeingVerified() {
 		new Thread(() -> {
-			customerVerificationResponse = accountAccess.customerVerificationRequest(customerId, sessionId);
+			customerVerificationResponse = tokenService.customerVerificationRequest(customerId, sessionId);
 			customerVerificationResponseComplete.complete(customerVerificationResponse);
 		}).start();
 	}
@@ -51,7 +53,7 @@ public class VerifyCustomerSteps {
 		// This step simulate the event created by the account service.'
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
 		Event responseEvent = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
-		accountAccess.handleCustomerVerificationResponse(responseEvent);
+		tokenService.handleCustomerVerificationResponse(responseEvent);
 	}
 
 	@Then("the customer is verified")

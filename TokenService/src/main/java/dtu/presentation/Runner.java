@@ -8,8 +8,8 @@ import messaging.MessageQueue;
 public class Runner {
   public static void main(String[] args) {
     MessageQueue messageQueue = new MessageQueueFactory().getMessageQueue();
-	AccountAccess accountAccess = new AccountAccess(messageQueue);
-    TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
+//	AccountAccess accountAccess = new AccountAccess(messageQueue);
+    TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository());
     TokenEventHandler handler = new TokenEventHandler(messageQueue, tokenService);
     System.out.println(handler.toString() + " Token service started");
   }

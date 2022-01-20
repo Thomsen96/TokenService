@@ -16,8 +16,7 @@ public class CreateTokenSteps {
 		String merchantId = null;
 		String sessionId;
 		private static MockMessageQueue messageQueue = new MockMessageQueue();
-		private static AccountAccess accountAccess = new AccountAccess(messageQueue);
-		private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
+		private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository());
 		String[] tokens;
 	
 		@Given("a customer with id {string}")

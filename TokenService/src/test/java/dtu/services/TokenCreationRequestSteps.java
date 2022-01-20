@@ -23,8 +23,7 @@ public class TokenCreationRequestSteps {
 	String sessionId;
 	Token token = null;
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
-	private static AccountAccess accountAccess = new AccountAccess(messageQueue);
-	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
+	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository());
 	private TokenEventHandler tokenEventHandler = new TokenEventHandler(messageQueue, tokenService);
 	private CompletableFuture<Boolean> tokenCreationProcess = new CompletableFuture<>();
 	
@@ -59,7 +58,7 @@ public class TokenCreationRequestSteps {
 	public void theVerificationResponseEventIsReceived() {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
 		Event event = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
-		accountAccess.handleCustomerVerificationResponse(event);
+		tokenService.handleCustomerVerificationResponse(event);
 	}
 
 	@Then("the token creation response is sent")

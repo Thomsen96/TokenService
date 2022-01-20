@@ -25,8 +25,7 @@ public class VerifyTokenSteps {
 	Token token = null;
 	String sessionId;
 	private static MockMessageQueue messageQueue = new MockMessageQueue();
-	private static AccountAccess accountAccess = new AccountAccess(messageQueue);
-	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository(), accountAccess);
+	private TokenService tokenService = new TokenService(messageQueue, new LocalTokenRepository());
 	private TokenEventHandler tokenEventHandler = new TokenEventHandler(messageQueue, tokenService);
 	private CompletableFuture<ArrayList<Token>> tokenCreation = new CompletableFuture<>();
 	
@@ -51,7 +50,7 @@ public class VerifyTokenSteps {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
 		Event event = new Event("CustomerVerificationResponse." + sessionId, eventResponse );
 		Thread.sleep(100);
-		accountAccess.handleCustomerVerificationResponse(event);
+		tokenService.handleCustomerVerificationResponse(event);
 	}
 
 	@When("a request to verify the token is received")

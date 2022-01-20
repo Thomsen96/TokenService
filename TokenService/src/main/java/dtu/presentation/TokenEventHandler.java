@@ -25,6 +25,7 @@ public class TokenEventHandler {
 		var customerId = eventArguments.getArgument(0, String.class);
 		var numOfTokens = eventArguments.getArgument(1, Integer.class);
 		
+		System.out.println("handleTokenCreationRequest");
 		tokenService.createTokens(customerId, numOfTokens, sessionId);
 	}
 

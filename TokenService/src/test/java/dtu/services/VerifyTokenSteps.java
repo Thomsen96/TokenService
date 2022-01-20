@@ -10,6 +10,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.GET_CUSTOMER_ID_FROM_TOKEN_REQUESTED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.CUSTOMER_VERIFICATION_RESPONDED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -49,7 +52,7 @@ public class VerifyTokenSteps {
 	@When("the account verification response event is received")
 	public void theAccountVerificationResponseEventIsReceived() throws InterruptedException {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
-		Event event = new Event("CustomerVerificationResponse." + sessionId, eventResponse );
+		Event event = new Event(CUSTOMER_VERIFICATION_RESPONDED + sessionId, eventResponse );
 		Thread.sleep(100);
 		accountAccess.handleCustomerVerificationResponse(event);
 	}
@@ -59,7 +62,7 @@ public class VerifyTokenSteps {
 //		token = tokenService.createTokens(customerId, 1, sessionId).stream().findFirst().get();
 		token = tokenCreation.join().iterator().next();
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, token.getUuid());
-		Event incommingEvent = new Event("TokenVerificationRequested", eventResponse);
+		Event incommingEvent = new Event(GET_CUSTOMER_ID_FROM_TOKEN_REQUESTED, eventResponse);
 		tokenEventHandler.handleTokenVerificationRequest(incommingEvent);
 	}
 
@@ -67,8 +70,8 @@ public class VerifyTokenSteps {
 	@Then("the token is verified")
 	public void theTokenIsVerified() {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, token);
-		Event event = new Event("TokenVerificationResponse." + sessionId, eventResponse);
-		assertEquals(event, messageQueue.getEvent("TokenVerificationResponse." + sessionId));
+		Event event = new Event(GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED + sessionId, eventResponse);
+		assertEquals(event, messageQueue.getEvent(GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED + sessionId));
 	}
 
 }

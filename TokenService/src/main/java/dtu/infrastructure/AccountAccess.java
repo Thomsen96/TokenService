@@ -7,6 +7,9 @@ import messaging.Event;
 import messaging.EventResponse;
 import messaging.MessageQueue;
 
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.CUSTOMER_VERIFICATION_REQUESTED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.CUSTOMER_VERIFICATION_RESPONDED;
+
 public class AccountAccess {
 
 	private MessageQueue messageQueue;
@@ -19,16 +22,16 @@ public class AccountAccess {
 	public Event customerVerificationRequest(String customerId, String sessionId) {
 		sessions.put(sessionId, new CompletableFuture<Event>());
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
-		Event outgoingEvent = new Event("CustomerVerificationRequest", eventResponse);
+		Event outgoingEvent = new Event(CUSTOMER_VERIFICATION_REQUESTED, eventResponse);
 		
-		messageQueue.addHandler("CustomerVerificationResponse." + sessionId, this::handleCustomerVerificationResponse);
+		messageQueue.addHandler(CUSTOMER_VERIFICATION_RESPONDED + sessionId, this::handleCustomerVerificationResponse);
 		messageQueue.publish(outgoingEvent);
 
         new Thread(() -> {
         	try {
         		Thread.sleep(5000);
         		EventResponse eventResponseThread = new EventResponse(sessionId, false, "No response from AccountService");
-        		Event value = new Event("CustomerVerificationResponse." + sessionId, eventResponseThread);
+        		Event value = new Event(CUSTOMER_VERIFICATION_RESPONDED + sessionId, eventResponseThread);
         		sessions.get(sessionId).complete(value);
         	} catch (InterruptedException e) {
         		e.printStackTrace();
@@ -40,7 +43,7 @@ public class AccountAccess {
 
 	// Handler for verification response from CustomerService in the form of a boolean to see if the customer is registered.
 	public void handleCustomerVerificationResponse(Event e) {
-		System.err.println("CustomerVerificationResponse" + e);
+		System.err.println(CUSTOMER_VERIFICATION_RESPONDED + e);
 		String sessionId = e.getArgument(0, EventResponse.class).getSessionId();
 		sessions.get(sessionId).complete(e);
 	}

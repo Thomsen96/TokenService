@@ -15,6 +15,9 @@ import messaging.Event;
 import messaging.EventResponse;
 import messaging.MessageQueue;
 
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.TOKEN_CREATION_RESPONDED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.TOKEN_STATUS_RESPONDED;
+
 public class TokenService {
 
 	private ITokenRepository tokenRepository;
@@ -38,7 +41,7 @@ public class TokenService {
 		else {
 			eventResponse = new EventResponse(sessionId, false, "Token creation failed: Customer ID is not in our system");
 		}
-		Event creationResponseEvent = new Event("TokenCreationResponse." + sessionId, eventResponse);
+		Event creationResponseEvent = new Event(TOKEN_CREATION_RESPONDED + sessionId, eventResponse);
 		messageQueue.publish(creationResponseEvent);
 		return tokenRepository.get(customerId);
 	}
@@ -102,7 +105,7 @@ public class TokenService {
 
 	public void getStatus(String sessionId) {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, "Token service ready");
-		Event event = new Event("TokenStatusResponse." + sessionId, eventResponse);
+		Event event = new Event(TOKEN_STATUS_RESPONDED + sessionId, eventResponse);
 		messageQueue.publish(event);
 	}
 

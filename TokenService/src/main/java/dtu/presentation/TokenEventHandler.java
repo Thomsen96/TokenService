@@ -5,6 +5,8 @@ import messaging.Event;
 import messaging.EventResponse;
 import messaging.MessageQueue;
 
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.*;
+
 public class TokenEventHandler {
 	private MessageQueue messageQueue;
 	private TokenService tokenService;
@@ -12,9 +14,9 @@ public class TokenEventHandler {
 	public TokenEventHandler(MessageQueue messageQueue, TokenService tokenService) {
 		this.messageQueue = messageQueue;
 		this.tokenService = tokenService;
-		this.messageQueue.addHandler("TokenStatusRequest", this::handleTokenStatusRequest);
-		this.messageQueue.addHandler("TokenVerificationRequested", this::handleTokenVerificationRequest);
-		this.messageQueue.addHandler("TokenCreationRequest", this::handleTokenCreationRequest);
+		this.messageQueue.addHandler(TOKEN_STATUS_REQUESTED, this::handleTokenStatusRequest);
+		this.messageQueue.addHandler(GET_CUSTOMER_ID_FROM_TOKEN_REQUESTED, this::handleTokenVerificationRequest);
+		this.messageQueue.addHandler(TOKEN_CREATION_REQUESTED, this::handleTokenCreationRequest);
 		//		this.messageQueue.addHandler("CustomerVerified", this::handleCustomerVerification);
 	}
 
@@ -36,7 +38,7 @@ public class TokenEventHandler {
 		var sessionId = eventArguments.getSessionId();
 		var tokenUuid = eventArguments.getArgument(0, String.class);
 		EventResponse eventResponse = tokenService.getVerifiedTokenResponse(sessionId, tokenUuid);
-		Event event = new Event("TokenVerificationResponse." + sessionId, eventResponse);
+		Event event = new Event(GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED + sessionId, eventResponse);
 		messageQueue.publish(event);
 	}
 

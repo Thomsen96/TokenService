@@ -9,6 +9,11 @@ import dtu.presentation.TokenEventHandler;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.CUSTOMER_VERIFICATION_REQUESTED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.TOKEN_CREATION_REQUESTED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.CUSTOMER_VERIFICATION_RESPONDED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.TOKEN_CREATION_RESPONDED;
 import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.CompletableFuture;
@@ -39,7 +44,7 @@ public class TokenCreationRequestSteps {
 	@When("a request to create and receive new tokens is received")
 	public void aRequestToCreateAndReceiveNewTokensIsReceived() {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId, numOfTokens);
-		Event incommingEvent = new Event("TokenCreationRequest", eventResponse);
+		Event incommingEvent = new Event(TOKEN_CREATION_REQUESTED, eventResponse);
 
 		new Thread(() -> {
 			tokenEventHandler.handleTokenCreationRequest(incommingEvent);
@@ -50,16 +55,16 @@ public class TokenCreationRequestSteps {
 	@Then("the customer verification request is sent")
 	public void theCustomerVerificationRequestIsSent() throws InterruptedException {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
-		Event expectedVerificationRequestEvent = new Event("CustomerVerificationRequest", eventResponse); 
+		Event expectedVerificationRequestEvent = new Event(CUSTOMER_VERIFICATION_REQUESTED, eventResponse);
 		Thread.sleep(200);
-		Event actualVerificationRequestEvent = messageQueue.getEvent("CustomerVerificationRequest");
+		Event actualVerificationRequestEvent = messageQueue.getEvent(CUSTOMER_VERIFICATION_REQUESTED);
 		assertEquals(expectedVerificationRequestEvent, actualVerificationRequestEvent);
 	}
 
 	@When("the verification response event is received")
 	public void theVerificationResponseEventIsReceived() {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
-		Event event = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
+		Event event = new Event(CUSTOMER_VERIFICATION_RESPONDED + sessionId, eventResponse);
 		accountAccess.handleCustomerVerificationResponse(event);
 	}
 
@@ -68,8 +73,8 @@ public class TokenCreationRequestSteps {
 		tokenCreationProcess.join();
 		//EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokensJson(customerId));
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, new TokenDTO(tokenService.getTokens(customerId)));
-		Event expectedCreationResponseEvent = new Event("TokenCreationResponse." + sessionId, eventResponse);
-		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent("TokenCreationResponse." + sessionId));
+		Event expectedCreationResponseEvent = new Event(TOKEN_CREATION_RESPONDED + sessionId, eventResponse);
+		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent(TOKEN_CREATION_RESPONDED + sessionId));
 	}
 
 

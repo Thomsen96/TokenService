@@ -1,4 +1,6 @@
 package dtu.services;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.HANDLE.CUSTOMER_VERIFICATION_REQUESTED;
+import static messaging.GLOBAL_STRINGS.TOKEN_SERVICE.PUBLISH.CUSTOMER_VERIFICATION_RESPONDED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CompletableFuture;
@@ -41,23 +43,23 @@ public class VerifyCustomerSteps {
 	@Then("the verification request event is sent") // If this assert fails, maybe try again you were unlucky.
 	public void theVerificationEventIsSent() throws InterruptedException {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, customerId);
-		Event event = new Event("CustomerVerificationRequest", eventResponse); 
+		Event event = new Event(CUSTOMER_VERIFICATION_REQUESTED, eventResponse);
 		Thread.sleep(20); // added feature for concurrency
-		assertEquals(event, messageQueue.getEvent("CustomerVerificationRequest"));
+		assertEquals(event, messageQueue.getEvent(CUSTOMER_VERIFICATION_REQUESTED));
 	}
 	
 	@When("the verification response event is sent with customerId") // "when the CustomerVerificationResponse is received"
 	public void theVerificationEventIsSentWithCustomerId() {
 		// This step simulate the event created by the account service.'
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
-		Event responseEvent = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
+		Event responseEvent = new Event(CUSTOMER_VERIFICATION_RESPONDED + sessionId, eventResponse);
 		accountAccess.handleCustomerVerificationResponse(responseEvent);
 	}
 
 	@Then("the customer is verified")
 	public void theCustomerIsVerified() {
 		EventResponse eventResponse = new EventResponse(sessionId, true, null);
-		Event expectedEvent = new Event("CustomerVerificationResponse." + sessionId, eventResponse);
+		Event expectedEvent = new Event(CUSTOMER_VERIFICATION_RESPONDED + sessionId, eventResponse);
 		Event actualEvent = customerVerificationResponseComplete.join();
 		assertEquals(expectedEvent, actualEvent);
 	}

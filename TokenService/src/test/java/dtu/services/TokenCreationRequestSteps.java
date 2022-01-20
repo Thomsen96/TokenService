@@ -65,7 +65,7 @@ public class TokenCreationRequestSteps {
 	@Then("the token creation response is sent")
 	public void theTokenCreationResponseIsSent() {
 		tokenCreationProcess.join();
-		EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokens(customerId));
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokensJson(customerId));
 		Event expectedCreationResponseEvent = new Event("TokenCreationResponse." + sessionId, eventResponse);
 		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent("TokenCreationResponse." + sessionId));
 	}

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import dtu.domain.Token;
 import dtu.infrastructure.AccountAccess;
 import dtu.infrastructure.ITokenRepository;
@@ -29,6 +32,7 @@ public class TokenService {
 		EventResponse eventResponse;
 		if(event.getArgument(0, EventResponse.class).isSuccess()) {
 			eventResponse = generateTokenEventResponse(sessionId, customerId, numOfTokens);
+			System.out.println("Created tokens eventResponse: " + eventResponse);
 		}
 		else {
 			eventResponse = new EventResponse(sessionId, false, "Token creation failed: Customer ID is not in our system");
@@ -45,19 +49,28 @@ public class TokenService {
 			for( int i = 0; i < numOfTokens; i++) {
 				tokenRepository.create(customerId);
 			}
-			tokenList = tokenRepository.get(customerId);
-			List<String> tokenIdList = tokenList.stream().map(token -> token.getUuid()).collect(Collectors.toList());
-			String[] tokenIdArray = tokenIdList.toArray(new String[] {});
-			eventResponse = new EventResponse(sessionId, true, null, tokenIdArray);
+			String tokensAsJson = getTokensJson(customerId);
+			
+			eventResponse = new EventResponse(sessionId, true, null, tokensAsJson);
 		}
 		else {
 			eventResponse = new EventResponse(sessionId, false, "Invalid token request: You either have 2 or more tokens already, or you requested an invalid amount");
 		}
 		return eventResponse;
 	}
+	
+	public String getTokensJson(String customerId) {
+		//		return tokenRepository.get(customerId);
+		ArrayList<Token> tokenList = tokenRepository.get(customerId);
+		List<String> tokenIdList = tokenList.stream().map(token -> token.getUuid()).collect(Collectors.toList());
+		Gson gson=new GsonBuilder().create();
+		String tokensAsJson = gson.toJson(tokenIdList);
+		System.out.println("Token array: " + tokensAsJson);
+		return tokensAsJson;
+	}
 
 	public String[] getTokens(String customerId) {
-//		return tokenRepository.get(customerId);
+		//		return tokenRepository.get(customerId);
 		ArrayList<Token> tokenList = tokenRepository.get(customerId);
 		List<String> tokenIdList = tokenList.stream().map(token -> token.getUuid()).collect(Collectors.toList());
 		return tokenIdList.toArray(new String[] {});
@@ -66,7 +79,7 @@ public class TokenService {
 	public boolean deleteTokensForCustomer(String customerId) {
 		return tokenRepository.delete(customerId);
 	}
-	
+
 	public EventResponse getVerifiedTokenResponse(String sessionId, String tokenUuid) {
 		Token verfiedToken = tokenRepository.getVerfiedToken(tokenUuid);
 		EventResponse eventResponse;
@@ -78,7 +91,7 @@ public class TokenService {
 		}
 		return eventResponse;
 	}
-	
+
 	public Token getVerifiedToken(String tokenUuid) {
 		return tokenRepository.getVerfiedToken(tokenUuid);
 	}

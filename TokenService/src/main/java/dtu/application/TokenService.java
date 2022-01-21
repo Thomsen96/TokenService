@@ -88,10 +88,11 @@ public class TokenService {
 	}
 
 	public EventResponse getVerifiedTokenResponse(String sessionId, String tokenUuid) {
-		Token verfiedToken = tokenRepository.getVerfiedToken(tokenUuid);
+		Token verifiedToken = tokenRepository.getVerfiedToken(tokenUuid);
+		System.out.println("Token verified, sending customerId: " + verifiedToken.getCustomerId());
 		EventResponse eventResponse;
-		if(verfiedToken.getTokenValidity()) {
-			eventResponse = new EventResponse(sessionId, true, null, verfiedToken);
+		if(verifiedToken.getTokenValidity()) {
+			eventResponse = new EventResponse(sessionId, true, null, verifiedToken.getCustomerId());
 		}
 		else {
 			eventResponse = new EventResponse(sessionId, false, "The requested token is not valid");

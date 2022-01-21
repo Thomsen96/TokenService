@@ -69,7 +69,7 @@ public class VerifyTokenSteps {
 	
 	@Then("the token is verified")
 	public void theTokenIsVerified() {
-		EventResponse eventResponse = new EventResponse(sessionId, true, null, token);
+		EventResponse eventResponse = new EventResponse(sessionId, true, null, token.getCustomerId());
 		Event event = new Event(GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED + sessionId, eventResponse);
 		assertEquals(event, messageQueue.getEvent(GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED + sessionId));
 	}

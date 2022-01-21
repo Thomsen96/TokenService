@@ -34,9 +34,11 @@ public class TokenEventHandler {
 	// TODO: Change sessionId to arg 0
 	// Handler for verification request from Payments that needs to know if the token is valid and the cid for the token.
 	public void handleTokenVerificationRequest(Event incommingEvent) {
+		System.out.println("Recived request to veify customer");
 		EventResponse eventArguments = incommingEvent.getArgument(0, EventResponse.class);
 		var sessionId = eventArguments.getSessionId();
 		var tokenUuid = eventArguments.getArgument(0, String.class);
+		System.out.println("Token:" + tokenUuid);
 		EventResponse eventResponse = tokenService.getVerifiedTokenResponse(sessionId, tokenUuid);
 		Event event = new Event(GET_CUSTOMER_ID_FROM_TOKEN_RESPONDED + sessionId, eventResponse);
 		messageQueue.publish(event);

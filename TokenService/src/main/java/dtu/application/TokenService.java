@@ -41,7 +41,7 @@ public class TokenService {
 		else {
 			eventResponse = new EventResponse(sessionId, false, "Token creation failed: Customer ID is not in our system");
 		}
-		Event creationResponseEvent = new Event(TOKEN_CREATION_RESPONDED + "Break" + sessionId, eventResponse);
+		Event creationResponseEvent = new Event(TOKEN_CREATION_RESPONDED + sessionId, eventResponse);
 		messageQueue.publish(creationResponseEvent);
 		return tokenRepository.get(customerId);
 	}

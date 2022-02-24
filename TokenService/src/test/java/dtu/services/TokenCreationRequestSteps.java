@@ -73,8 +73,8 @@ public class TokenCreationRequestSteps {
 		tokenCreationProcess.join();
 		//EventResponse eventResponse = new EventResponse(sessionId, true, null, tokenService.getTokensJson(customerId));
 		EventResponse eventResponse = new EventResponse(sessionId, true, null, new TokenDTO(tokenService.getTokens(customerId)));
-		Event expectedCreationResponseEvent = new Event(TOKEN_CREATION_RESPONDED + "Break" + sessionId, eventResponse);
-		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent(TOKEN_CREATION_RESPONDED + "Break" + sessionId));
+		Event expectedCreationResponseEvent = new Event(TOKEN_CREATION_RESPONDED + sessionId, eventResponse);
+		assertEquals(expectedCreationResponseEvent, messageQueue.getEvent(TOKEN_CREATION_RESPONDED + sessionId));
 	}
 
 
